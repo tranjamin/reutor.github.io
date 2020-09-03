@@ -1,0 +1,228 @@
+
+
+body {
+    background-color: rgb(226, 244, 255);
+    color: purple;
+    margin-left: 1%;
+    margin-right: 0%;
+}
+
+.pageContent {
+    background-color: white;
+    margin-left: 19%;
+    margin-right: 20%;
+
+    padding: 1%;
+}
+
+.autocomplete {
+    /*the container must be positioned relative:*/
+    position: relative;
+    display: inline-block;
+}
+
+.errorMessages{
+    color: red;
+}
+
+p {
+    margin: 0%;
+}
+
+
+textarea{
+    width: 50%;
+}
+
+hr {
+    border: dashed lightblue 1px;
+}
+
+h1 {
+    color: darkviolet;
+    text-align: center;
+    font-size: 350%;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+h2{
+    margin: 0%;
+}
+
+li {
+    list-style-type: none;
+    font-size: 150%;
+    background-color: rgb(255, 215, 200);
+    text-align: center;
+    color: black;
+    border: solid rgb(206, 224, 255) 10px;
+
+    margin-left: 10%;
+    margin-bottom: 5%;
+    margin-right: 10%;
+
+    padding: 1% 1%;
+
+
+    /* width: 80%; */
+    
+}
+
+li img{
+    width:100%;
+    height:100%;
+}
+
+li.butt{
+    cursor:pointer;
+}
+li.butt:hover{
+    border: solid red 10px;
+}
+
+.nav {
+    text-align: center;
+    color: black;
+    position: fixed;
+    width: 20%;
+    padding-left: 0%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    margin-top: 0%;
+    margin-left: 0%;
+    background: rgb(225, 215, 255);
+}
+.nav p{
+    font-size:80%;
+}
+
+#homeButton {
+    cursor: pointer;
+    border: solid black 1px;
+    padding: 0.5% 2% 0.5% 2%;
+    background-color: rgb(255, 215, 235);
+    margin-right: 5%;
+    font-size: 200%;
+}
+#homeButton:hover {
+    background-color: white;
+}
+
+#BigR {
+    font-size: 150%;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+#Logo {
+    margin-top: 0.5%;
+    text-decoration: underline solid rgb(109, 185, 94) 13px;
+    text-decoration-line: underline;
+    text-decoration-thickness: 13px;
+    text-decoration-color: rgb(109,185,94);
+    text-decoration-style: solid;
+}
+
+.question {
+    list-style-type: none;
+    border: dashed black 1px;
+    background-color: lightgrey;
+    color: black;
+    font-size: 100%;
+    text-align: left;
+    margin-top: 0%;
+}
+.QstnInfo {
+    text-align: center;
+    margin-bottom: 0px;
+    font-size: 80%;
+}
+
+.QstnAnswer {
+    color: black;
+    background-color: black;
+    align-self: center;
+    text-align: center;
+}
+
+
+.autocomplete-items {
+    /* position: absolute; */
+    /* border: 1px solid #d4d4d4; */
+    border-bottom: none;
+    border-top: none;
+    z-index: 99;
+
+    top: 100%;
+    left: 0;
+    right: 0;
+  }
+  
+
+  
+  .autocomplete-items div {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #fff;
+    border-bottom: 1px solid #d4d4d4;
+  }
+  .autocomplete-items div:hover {
+
+    background-color: #e9e9e9;
+  }
+  .autocomplete-active {
+
+    background-color: DodgerBlue !important;
+    color: #ffffff;
+  }
+
+
+  header p {
+      position: fixed;
+      right: 2%;
+      top: 2%;
+      cursor: pointer;
+      color: black;
+      text-align: center;
+  }
+  
+  #signup_form {
+      display: none;
+      width: 80%;
+      height: 80%; 
+      background-color: rgba(255,255,255,0.97);
+      position: fixed;
+      left: 10%;
+      top: 10%;
+      border-radius: 2%;
+      text-align: center;
+  }
+  #signup_form p {
+      color: black;
+      font-size: 2em;
+      text-align: center;
+      font-family: 'Maven Pro', sans-serif;
+      font-weight: 600;
+  }
+  #signup_form input[type="text"], #signup_form input[type="password"] {
+      width: 29.5%;
+      line-height: 200%;
+      border-radius: 4pt;
+      border: solid 1pt grey;
+      margin: 0.2%;
+      padding-left: 0.5%;
+  }
+  #signup_form input[type="submit"] {
+    width: 15%;
+    line-height: 200%;
+    border-radius: 4pt;
+    border: solid 1pt grey;
+    margin: 0.2%;
+    padding-left: 0.5%;
+}
+  #signup_form span {
+      display: block;
+      margin: 1%;
+  }
+  .error {
+      color: red;
+  }

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<html>
+    <head>
+        <title>Reutor</title>
+        <link href="./css/main.css" type="text/css" rel="stylesheet"></link>
+        <link href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"> 
+    </head>
+    <header>
+        <p id="signup_button">Login/Signup</p>
+
+    </header>
+    <body>
+        <span class="nav"><p><span id='homeButton' onclick="window.location.href='index.html'">HOME</span>  
+            This site was created by 
+            <a id="link" target="_blank" href="http://rooster202.github.io">Reuben</a>
+        </p></span>
+
+        <h1 id="Logo"><span id="BigR">R</span>eutor</h1>
+        <br><br>
+        <div class="pageContent">
+        <div class="intro">
+            <p>Welcome to Reutor (Reuben Tutor)<br><br>
+                This site is a tool built for revision for QCAA Senior subjects in Queensland. <br>
+                Anyone can contribute to the site and anyone can view the questions. Please note that this is a side project, 
+                worked on during spare time amongst our own revision. <br><br>
+                Please treat the site with respect. Only contribute questions that relate to any of the 4 Units of work.<br><br>
+            </p>
+            
+        </div>
+
+        <h2>Question Bank for Queensland Atar Curiculum:</h2>
+        <br><br>
+        <li class="butt" onclick="window.location.href='useQB.html'">Use question bank</li>
+        <li class="butt" onclick="window.location.href='contributeQB.html'">Contribute to question bank</li>
+        <div id="signup_form">
+            <p>Login</p>
+            <form>
+                <input type="text" placeholder="Username" name="username"><br>
+                <input type="password" placeholder="Password" name="password"><br>
+                <input type="submit" value="Login">
+            </form>
+            <span class="error"></span>
+            <span>or</span><br><p>Signup</p>
+            <form>
+                <input type="text" placeholder="Create Username" name="username"><br>
+                <input type="password" placeholder="Create Password" name="password"><br>
+                <input type="password" placeholder="Confirm Password" name="confirm"><br>
+                <input type="submit" value="Signup">
+            </form>
+            <span class="error"></span>
+        </div>
+        
+        <!-- -----------------------JAVASCRIPT------------------------- -->
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-app.js"></script>
+
+        <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+        <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-analytics.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-database.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-auth.js"></script>
+
+        <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyDDA6cL7gj05Qf82o5SvoOOP1mZck3UKp8",
+            authDomain: "rutor-1962a.firebaseapp.com",
+            databaseURL: "https://rutor-1962a.firebaseio.com",
+            projectId: "rutor-1962a",
+            storageBucket: "rutor-1962a.appspot.com",
+            messagingSenderId: "1097644424015",
+            appId: "1:1097644424015:web:295af3229b7d7801c7a33a",
+            measurementId: "G-H4T4CK6YN7"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+        var database = firebase.database();
+        const auth = firebase.auth();
+    </script>
+            <script src="./javascript/index.js"></script>
+    </body>
+
+
+</html>

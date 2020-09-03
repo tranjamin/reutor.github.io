@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<html>
+    <head>
+        <title>Rutor</title>
+        <link href="./css/main.css" type="text/css" rel="stylesheet"></link>
+    </head>
+    <body>
+        <span class="nav"><p><span id='homeButton' onclick="window.location.href='index.html'">HOME</span>  
+            This site was created by 
+            <a id="link" target="_blank" href="http://rooster202.github.io">Reuben</a>
+        </p></span>
+
+        <h1 id="Logo"><span id="BigR">R</span>utor</h1>
+        <br><br>
+
+
+        <div class="pageContent">
+            <h2>Find Questions:</h2>
+            <br>
+
+            <form id="findQstnForm">
+                <label for='subject'>Subject:</label>
+                <select name="subject" >
+                    <option>Chemistry</option>
+                    <option>Physics</option>
+                    <option>Maths Methods</option>
+                    <option>Maths Specialist</option>
+                    <option>Engineering</option>
+                    <option>English</option>
+                </select><br>
+                <label for='unit'>Unit:</label>
+                <select name="unit">
+                    <option>Unit 1</option>
+                    <option>Unit 2</option>
+                    <option>Unit 3</option>
+                    <option>Unit 4</option>
+                </select><br>
+                
+                <!--
+                <label for="U1">Unit 1</label><input id="U1" type='checkbox'>
+                <label for="U2">Unit 2</label><input id="U2" type='checkbox'>
+                <label for="U3">Unit 3</label><input id="U3" type='checkbox'>
+                <label for="U4">Unit 4</label><input id="U4" type='checkbox'><br>
+                -->
+                <label for="SF">Simple Famliar</label><input name="SF" checked type='checkbox'>
+                <label for="CF">Complex Familiar</label><input name="CF" checked type='checkbox'>
+                <label for="CU">Complex Unfamiliar</label><input name="CU" checked type='checkbox'><br>
+
+                <label for="techFree">Tech Free</label><input name="techFree" checked type='checkbox'>
+                <label for="techActive">Tech Active</label><input name="techActive" checked type='checkbox'>
+                <label for="dunno">Dunno</label><input name="dunno" checked type='checkbox'><br><br>
+                
+                <div id="topicDiv"></div>
+
+                <br><br>
+                <input id='generateButton' type='submit' value="Generate Questions">
+            </form>
+            
+            <br><br>
+            <hr>
+            <div id='questionZone'></div>
+
+
+        </div>
+
+
+
+
+
+
+        <!-- --------------------JAVASCRIPT-------------------  -->
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-app.js"></script>
+
+        <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+        <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-analytics.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-database.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-auth.js"></script>
+
+        <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyDDA6cL7gj05Qf82o5SvoOOP1mZck3UKp8",
+            authDomain: "rutor-1962a.firebaseapp.com",
+            databaseURL: "https://rutor-1962a.firebaseio.com",
+            projectId: "rutor-1962a",
+            storageBucket: "rutor-1962a.appspot.com",
+            messagingSenderId: "1097644424015",
+            appId: "1:1097644424015:web:295af3229b7d7801c7a33a",
+            measurementId: "G-H4T4CK6YN7"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+        var database = firebase.database();
+        const auth = firebase.auth();
+        console.log('geohgoe')
+        </script>
+        <script src='./javascript/useQB.js'></script>
+    </body>
+
+
+</html>

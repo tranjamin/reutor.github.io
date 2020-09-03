@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<html>
+    <head>
+        <title>Rutor</title>
+        <link href="./css/main.css" type="text/css" rel="stylesheet"></link>
+    </head>
+    <body>
+        <span class="nav"><p><span id='homeButton' onclick="window.location.href='index.html'">HOME</span>  
+            This site was created by 
+            <a id="link" target="_blank" href="http://rooster202.github.io">Reuben</a>
+        </p></span>
+
+        <h1 id="Logo"><span id="BigR">R</span>utor</h1>
+        <br><br>
+
+        <div class="pageContent">
+            <h2>Contribute a question:</h2>
+
+            <form id="newQstnForm" autocomplete="off">
+                <label for='subject'>Subject:</label>
+                <select name="subject" >
+                    <option>Chemistry</option>
+                    <option>Physics</option>
+                    <option>Maths Methods</option>
+                    <option>Maths Specialist</option>
+                    <option>Engineering</option>
+                    <option>English</option>
+                </select><br>
+                <label for='unit'>Unit:</label>
+                <select id="unit">
+                    <option>Unit 1</option>
+                    <option>Unit 2</option>
+                    <option>Unit 3</option>
+                    <option>Unit 4</option>
+                    <option>Don't Know</option>
+                </select><br>
+
+                <label for='difficulty'>Difficulty:</label>
+                <select id="difficulty"><br>
+                    <option>Simple Familiar</option>
+                    <option>Complex Familiar</option>
+                    <option>Complex Unfamiliar</option>
+                    <option>Dunno</option>
+                </select><br>
+                <label for='tech'>Calculator?: </label>
+                <select id="tech"><br>
+                    <option>Tech Free</option>
+                    <option>Tech Active</option>
+                    <option>Dunno</option>
+                </select><br>
+
+                <label for="topic">Topic: </label>
+                <span class="autoComplete"><input name="topic"placeholder="Topic" required></span><br>
+
+                <label for="contributer">Contributer: </label>
+                <input name="contributer"placeholder="YOUR NAME" required><br>
+
+                <label for="questionInput">Write your question here:</label><br>
+                <textarea required id="questionInput"placeholder="QUESTION"></textarea><br>
+
+                <label for="answerInput">Write your answer here, incuding working out if possible (if answer not known, leave blank):</label><br>
+                <textarea id="answerInput"placeholder="ANSWER"></textarea><br>
+                
+                <!-- <label for="workingOutInput">Write your working out here (or leave blank):</label><br>
+                <textarea id="workingOutInput"placeholder="WORKING OUT"></textarea><br> -->
+
+                <br><br>
+                <input id='contributeButton' type='submit' value="Contribute Question">
+
+                
+
+            </form>
+            <span class="error" style="color: red;"></span>
+        </div>
+        
+
+        
+
+
+
+        <!-- -----------------------JAVASCRIPT------------------------- -->
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-app.js"></script>
+
+        <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+        <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-analytics.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-database.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-auth.js"></script>
+
+        <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyDDA6cL7gj05Qf82o5SvoOOP1mZck3UKp8",
+            authDomain: "rutor-1962a.firebaseapp.com",
+            databaseURL: "https://rutor-1962a.firebaseio.com",
+            projectId: "rutor-1962a",
+            storageBucket: "rutor-1962a.appspot.com",
+            messagingSenderId: "1097644424015",
+            appId: "1:1097644424015:web:295af3229b7d7801c7a33a",
+            measurementId: "G-H4T4CK6YN7"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+        var database = firebase.database();
+        const auth = firebase.auth();
+        </script>
+        <script src="./javascript/contributeQB.js"></script>
+    </body>
+
+
+</html>
