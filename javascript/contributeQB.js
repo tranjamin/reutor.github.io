@@ -1,3 +1,5 @@
+const $ = ele => {return document.getElementById(ele)}
+
 console.log("contributeQB.js is running on current html document")
 
 contributeForm = document.querySelector("#newQstnForm")
@@ -27,12 +29,13 @@ contributeForm["topic"].addEventListener("focus", (e)=>{
 contributeForm.addEventListener('submit', (e)=>{
   e.preventDefault();
   //change if you want to allow anonymous contributions
-  if (auth.currentUser == null) {e.target.nextElementSibling.innerHTML = "You must be signed in to contribute"}
+  if (auth.currentUser == null && false) {e.target.nextElementSibling.innerHTML = "You must be signed in to contribute"}
   
-  else if (auth.currentUser.email.slice(0, auth.currentUser.email.lastIndexOf('@'))) {
-    e.target.nextElementSibling.innerHTML = "Your contributor name must be the same as your username";
-  }
+  // else if (auth.currentUser.email.slice(0, auth.currentUser.email.lastIndexOf('@'))) {
+  //   e.target.nextElementSibling.innerHTML = "Your contributor name must be the same as your username";
+  // }
   else {
+  $('contributeButton').style.display = "none";
   console.log("Form_Submitted")
   console.log("Form submitted by "+contributeForm['contributer'].value)
   database.ref(`questions/${contributeForm['subject'].value}/${contributeForm['unit'].value}/${Math.round(Math.random()*100000000)}`).set({
@@ -43,7 +46,8 @@ contributeForm.addEventListener('submit', (e)=>{
     //workingOut: contributeForm['workingOutInput'].value.replaceAll().replaceAll("\n", "</br>"),
     tech: contributeForm['tech'].value,
     topic: contributeForm["topic"].value
-  });
+  }).catch(error => {e.target.nextElementSibling.innerHTML = error.message; 
+    $('contributeButton').style.display = "initial";});
   database.ref("topics/"+contributeForm["subject"].value+"/"+contributeForm["unit"].value).once("value", function(snapshot){
     pushTopic = true
     snapshot.forEach(function(child){
@@ -56,7 +60,8 @@ contributeForm.addEventListener('submit', (e)=>{
         name: contributeForm["topic"].value
       })
     }
-  }).then(ref => {window.location.href="./index.html"})
+  }).then(ref => window.location.href="./index.html").catch(error => {e.target.nextElementSibling.innerHTML = error.message; 
+    $('contributeButton').style.display = "initial";})
 
 }
 })
