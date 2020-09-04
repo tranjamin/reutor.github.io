@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<html>
+    <head>
+        <title>Rutor</title>
+        <link href="./css/main.css" type="text/css" rel="stylesheet"></link>
+        <link href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"> 
+    </head>
+    <header>
+        <p id="signup_button">Signout</p>
+
+    </header>
+    <body>
+        <span class="nav"><p><span id='homeButton' onclick="window.location.href='index.html'">HOME</span>  
+            This site was created by 
+            <a id="link" target="_blank" href="http://rooster202.github.io">Reuben</a>,
+            <a target="_blank" href="http://tranjamin.github.io">Ben</a> and <br>
+            <a target="_blank" href="https://nebrok.github.io">Some random Maccas slave</a>
+        </p></span>
+
+        <h1 id="Logo"><span id="BigR">R</span>utor</h1>
+        <br><br>
+
+        <div class="pageContent">
+        <h2>Account</h2>
+        <br><br>
+        
+        </div>
+        
+        <!-- -----------------------JAVASCRIPT------------------------- -->
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-app.js"></script>
+
+        <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+        <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-analytics.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-database.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-auth.js"></script>
+
+        <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyDDA6cL7gj05Qf82o5SvoOOP1mZck3UKp8",
+            authDomain: "rutor-1962a.firebaseapp.com",
+            databaseURL: "https://rutor-1962a.firebaseio.com",
+            projectId: "rutor-1962a",
+            storageBucket: "rutor-1962a.appspot.com",
+            messagingSenderId: "1097644424015",
+            appId: "1:1097644424015:web:295af3229b7d7801c7a33a",
+            measurementId: "G-H4T4CK6YN7"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+        var database = firebase.database();
+        const auth = firebase.auth();
+    </script>
+            <script src="./javascript/account.js"></script>
+    </body>
+
+
+</html>

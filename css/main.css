@@ -80,13 +80,6 @@ li.butt:hover{
     border: solid red 10px;
 }
 
-li.about{
-    margin-left: 42%;
-    margin-right: 42%;
-    border: solid rgb(146, 187, 137) 10px;
-    font-size: 1.5vw;
-}
-
 .nav {
     text-align: center;
     color: black;
@@ -144,9 +137,15 @@ li.about{
     font-size: 80%;
 }
 
+.QstnAnswerLabel {
+    background-color: rgb(206, 194, 194);
+    cursor: pointer;
+    padding: 0.5%;
+    border: solid grey 1pt;
+}
 .QstnAnswer {
     color: black;
-    background-color: black;
+    display: none;
     align-self: center;
     text-align: center;
 }
@@ -183,7 +182,7 @@ li.about{
   }
 
 
-  header p {
+  header > p {
       position: fixed;
       right: 2%;
       top: 2%;
@@ -225,6 +224,7 @@ li.about{
     border: solid 1pt grey;
     margin: 0.2%;
     padding-left: 0.5%;
+    cursor: pointer;
 }
   #signup_form span {
       display: block;
