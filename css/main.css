@@ -80,6 +80,13 @@ li.butt:hover{
     border: solid red 10px;
 }
 
+li.about{
+    margin-left: 42%;
+    margin-right: 42%;
+    border: solid rgb(146, 187, 137) 10px;
+    font-size: 1.5vw;
+}
+
 .nav {
     text-align: center;
     color: black;
