@@ -56,11 +56,8 @@ contributeForm.addEventListener('submit', (e)=>{
         name: contributeForm["topic"].value
       })
     }
-  })
+  }).then(ref => {window.location.href="./index.html"})
 
-  window.setTimeout(function(){
-    window.location.href = "./index.html"
-  }, 500)
 }
 })
 //console.log(database.ref('Questions/question1').val())
