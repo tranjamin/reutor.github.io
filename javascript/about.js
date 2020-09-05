@@ -1,12 +1,22 @@
 const $ = ele => {return document.getElementById(ele)}
 
+
 auth.onAuthStateChanged(user => {
-  if (user) {$('signup_button').innerHTML = `Welcome, ${user.email.slice(0, user.email.lastIndexOf('@'))}<br><p>Logout</p><br><p>Account</p>`}
+    console.log(user)
+    if (user) {
+        $('welcomeMessage').innerHTML = `Welcome, ${user.email.slice(0, user.email.lastIndexOf('@'))}`  
+        $('signup_button').innerHTML = `<br><p class="navButton">Logout</p><br><p class="navButton">Account</p>`
+        $('signup_button').className = ""
+    } else{
+        console.log("user not signed in")
+    }
 })
+    
+
 
 
 $('signup_button').addEventListener('click', e => {
-  if (e.target.innerHTML == "Login/Signup") {
+  if (e.target.innerHTML == "LOGIN/SIGNUP") {
   $('signup_form').style.display = $('signup_form').style.display == "block" ? "none" : "block";}
   else if (e.target.innerHTML == "Logout") {
       auth.signOut().then(() => location.reload());

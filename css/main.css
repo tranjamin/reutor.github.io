@@ -91,7 +91,7 @@ li.about{
     text-align: center;
     color: black;
     position: fixed;
-    width: 20%;
+    width: 30%;
     padding-left: 0%;
     padding-top: 1%;
     padding-bottom: 1%;
@@ -99,19 +99,36 @@ li.about{
     margin-left: 0%;
     background: rgb(225, 215, 255);
 }
+
 .nav p{
     font-size:80%;
 }
 
-#homeButton {
+.LISU {
+    width: 15%;
+    font-size: 0.8vw;
+    text-align: center;
+    color: black;
+    position: fixed;
+    padding-left: 3%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    margin-top: 0%;
+    margin-left: 80%;
+    background: rgb(225, 215, 255);
+}
+
+
+.navButton {
     cursor: pointer;
     border: solid black 1px;
+    width: 78%;
     padding: 0.5% 2% 0.5% 2%;
     background-color: rgb(255, 215, 235);
-    margin-right: 5%;
+    margin-right: 6%;
     font-size: 200%;
 }
-#homeButton:hover {
+.navButton:hover {
     background-color: white;
 }
 

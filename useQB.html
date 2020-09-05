@@ -6,19 +6,17 @@
         <link href="./css/main.css" type="text/css" rel="stylesheet"></link>
     </head>
     <header>
-        <p id="signup_button">Login/Signup</p>
-
-    </header>
-    <body>
-        <span class="nav"><p><span id='homeButton' onclick="window.location.href='index.html'">HOME</span>  
+        <span class="LISU"><p id="welcomeMessage"></p><p id="signup_button" class="navButton">LOGIN/SIGNUP</p></span>
+        <span class="nav"><p><span class='navButton' onclick="window.location.href='index.html'">HOME</span>  
             This site was created by 
-            <a id="link" target="_blank" href="http://rooster202.github.io">Reuben</a>
+            <a id="link" target="_blank" href="http://rooster202.github.io">Reuben</a>,
+            <a id="link" target="_blank" href="http://tranjamin.github.io">Ben</a> and 
+            <a id="link" target="_blank" href="http://nebrok.github.io">Korben</a>
         </p></span>
-
         <h1 id="Logo"><span id="BigR">R</span>eutor</h1>
         <br><br>
-
-
+    </header>
+    <body>
         <div class="pageContent">
             <h2>Find Questions:</h2>
             <br>
@@ -68,6 +66,25 @@
 
         </div>
 
+
+        <!-- BENS LOG IN / SIGN UP FORM: -->
+        <div id="signup_form">
+            <p>Login</p>
+            <form>
+                <input type="text" placeholder="Username" name="usernameLI"><br>
+                <input type="password" placeholder="Password" name="passwordLI"><br>
+                <input type="submit" value="Login">
+            </form>
+            <span class="error"></span>
+            <span>or</span><br><p>Signup</p>
+            <form>
+                <input type="text" placeholder="Create Username" name="usernameSU"><br>
+                <input type="password" placeholder="Create Password" name="passwordSU"><br>
+                <input type="password" placeholder="Confirm Password" name="confirmSU"><br>
+                <input type="submit" value="Signup">
+            </form>
+            <span class="error"></span>
+        </div>
 
 
 
