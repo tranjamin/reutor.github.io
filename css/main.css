@@ -183,7 +183,7 @@ li.about{
   }
 
 
-  header p {
+  header > p {
       position: fixed;
       right: 2%;
       top: 2%;
@@ -232,4 +232,23 @@ li.about{
   }
   .error {
       color: red;
+  }
+
+  #account_table {
+      width: 100%;
+      text-align: center;
+      padding: 0% 1%;
+  }
+  #account_table th {
+      background-color: lightblue;
+      cursor: pointer
+  }
+  .account_data {
+      width: 97.5%;
+      height: 420px;
+      background-color: rgb(225, 215, 255);
+      margin: 0 1.25%;
+  }
+  #account_table th:first-of-type {
+    background-color: rgb(225, 215, 255)
   }
