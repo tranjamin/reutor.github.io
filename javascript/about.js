@@ -1,28 +1,19 @@
-//syntax
-//auth.currentUser -----> gets current user
-//auth.currentUser .uid .email .profile ----> gets user info
-//auth.currentUser .updateEmail(email) .updatePassword(password) .updateProfile(profile) ----> updates
-//auth.signOut() ----> signs current user out
-//auth.signInWithEmailAndPassword ----> sign in format that we're using
-//auth.onAuthStateChanged(user => function), auth.onIdTokenChanged(user => function) ----> on data change
-//<------IF YOU WANT TO UPDATE INFO, YOU MUST RENEW YOUR AUTH TOKEN FIRST------->
-
-
 const $ = ele => {return document.getElementById(ele)}
 
 auth.onAuthStateChanged(user => {
-    if (user) {$('signup_button').innerHTML = `Welcome, ${user.email.slice(0, user.email.lastIndexOf('@'))}<br><p>Logout</p><br><p>Account</p>`}
+  if (user) {$('signup_button').innerHTML = `Welcome, ${user.email.slice(0, user.email.lastIndexOf('@'))}<br><p>Logout</p><br><p>Account</p>`}
 })
 
+
 $('signup_button').addEventListener('click', e => {
-    if (e.target.innerHTML == "Login/Signup") {
-    $('signup_form').style.display = $('signup_form').style.display == "block" ? "none" : "block";}
-    else if (e.target.innerHTML == "Logout") {
-        auth.signOut().then(() => location.reload());
-    }
-    else {
-        location.assign('account.html')
-    }
+  if (e.target.innerHTML == "Login/Signup") {
+  $('signup_form').style.display = $('signup_form').style.display == "block" ? "none" : "block";}
+  else if (e.target.innerHTML == "Logout") {
+      auth.signOut().then(() => location.reload());
+  }
+  else {
+      location.assign('account.html')
+  }
 })
 $('signup_form').getElementsByTagName('form')[0].addEventListener('submit', e => {
     e.preventDefault();

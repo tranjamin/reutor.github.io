@@ -1,3 +1,36 @@
+const $ = ele => {return document.getElementById(ele)}
+
+auth.onAuthStateChanged(user => {
+  if (user) {$('signup_button').innerHTML = `Welcome, ${user.email.slice(0, user.email.lastIndexOf('@'))}<br><p>Logout</p><br><p>Account</p>`}
+})
+
+
+$('signup_button').addEventListener('click', e => {
+  if (e.target.innerHTML == "Login/Signup") {
+  $('signup_form').style.display = $('signup_form').style.display == "block" ? "none" : "block";}
+  else if (e.target.innerHTML == "Logout") {
+      auth.signOut().then(() => location.reload());
+  }
+  else {
+      location.assign('account.html')
+  }
+})
+$('signup_form').getElementsByTagName('form')[0].addEventListener('submit', e => {
+    e.preventDefault();
+    ([]).forEach.call(document.getElementsByClassName('error'), ele => {ele.innerHTML = "";})
+    auth.signInWithEmailAndPassword(e.target.username.value + "@rutor.com", e.target.password.value).then(() => {window.location.reload()}).catch(error => {e.target.nextElementSibling.innerHTML = error.message});
+})
+$('signup_form').getElementsByTagName('form')[1].addEventListener('submit', e => {
+    e.preventDefault();
+    ([]).forEach.call(document.getElementsByClassName('error'), ele => {ele.innerHTML = "";})
+    if (e.target.password.value == e.target.confirm.value) {
+    auth.createUserWithEmailAndPassword(e.target.username.value + "@rutor.com", e.target.password.value).then(() => {window.location.reload()}).catch(error => {e.target.nextElementSibling.innerHTML = error.message});
+    }
+    else {
+        e.target.nextElementSibling.innerHTML = "Passwords do not match";
+    }
+})
+
 console.log("contributeQB.js is running on current html document")
 
 contributeForm = document.querySelector("#newQstnForm")
@@ -27,12 +60,13 @@ contributeForm["topic"].addEventListener("focus", (e)=>{
 contributeForm.addEventListener('submit', (e)=>{
   e.preventDefault();
   //change if you want to allow anonymous contributions
-  if (auth.currentUser == null) {e.target.nextElementSibling.innerHTML = "You must be signed in to contribute"}
+  if (auth.currentUser == null && false) {e.target.nextElementSibling.innerHTML = "You must be signed in to contribute"}
   
-  else if (auth.currentUser.email.slice(0, auth.currentUser.email.lastIndexOf('@'))) {
-    e.target.nextElementSibling.innerHTML = "Your contributor name must be the same as your username";
-  }
+  // else if (auth.currentUser.email.slice(0, auth.currentUser.email.lastIndexOf('@'))) {
+  //   e.target.nextElementSibling.innerHTML = "Your contributor name must be the same as your username";
+  // }
   else {
+  $('contributeButton').style.display = "none";
   console.log("Form_Submitted")
   console.log("Form submitted by "+contributeForm['contributer'].value)
   database.ref(`questions/${contributeForm['subject'].value}/${contributeForm['unit'].value}/${Math.round(Math.random()*100000000)}`).set({
@@ -43,7 +77,8 @@ contributeForm.addEventListener('submit', (e)=>{
     //workingOut: contributeForm['workingOutInput'].value.replaceAll().replaceAll("\n", "</br>"),
     tech: contributeForm['tech'].value,
     topic: contributeForm["topic"].value
-  });
+  }).catch(error => {e.target.nextElementSibling.innerHTML = error.message; 
+    $('contributeButton').style.display = "initial";});
   database.ref("topics/"+contributeForm["subject"].value+"/"+contributeForm["unit"].value).once("value", function(snapshot){
     pushTopic = true
     snapshot.forEach(function(child){
@@ -56,11 +91,9 @@ contributeForm.addEventListener('submit', (e)=>{
         name: contributeForm["topic"].value
       })
     }
-  })
+  }).then(ref => window.location.href="./index.html").catch(error => {e.target.nextElementSibling.innerHTML = error.message; 
+    $('contributeButton').style.display = "initial";})
 
-  window.setTimeout(function(){
-    window.location.href = "./index.html"
-  }, 500)
 }
 })
 //console.log(database.ref('Questions/question1').val())
