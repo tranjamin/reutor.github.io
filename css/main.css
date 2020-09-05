@@ -91,7 +91,7 @@ li.about{
     text-align: center;
     color: black;
     position: fixed;
-    width: 30%;
+    width: 25%;
     padding-left: 0%;
     padding-top: 1%;
     padding-bottom: 1%;
@@ -110,11 +110,11 @@ li.about{
     text-align: center;
     color: black;
     position: fixed;
-    padding-left: 3%;
+    padding-left: 0%;
     padding-top: 1%;
     padding-bottom: 1%;
     margin-top: 0%;
-    margin-left: 80%;
+    margin-left: 83%;
     background: rgb(225, 215, 255);
 }
 
@@ -125,11 +125,21 @@ li.about{
     width: 78%;
     padding: 0.5% 2% 0.5% 2%;
     background-color: rgb(255, 215, 235);
-    margin-right: 6%;
+    margin-right: 1%;
+    margin-left: 9%;
     font-size: 200%;
 }
 .navButton:hover {
     background-color: white;
+}
+
+#homeButton{
+    margin-left: 1%;
+}
+
+#welcomeMessage {
+    font-size: 150%;
+    text-align: center;
 }
 
 #BigR {

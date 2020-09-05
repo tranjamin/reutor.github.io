@@ -18,7 +18,7 @@ auth.onAuthStateChanged(user => {
 $('signup_button').addEventListener('click', e => {
   if (e.target.innerHTML == "LOGIN/SIGNUP") {
   $('signup_form').style.display = $('signup_form').style.display == "block" ? "none" : "block";}
-  else if (e.target.innerHTML == "Logout") {
+  else if (e.target.innerHTML == "LOGOUT") {
       auth.signOut().then(() => location.reload());
   }
   else {
