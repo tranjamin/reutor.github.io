@@ -1,4 +1,4 @@
-const $ = ele => {return document.getElementById(ele)}
+$ = ele => {return document.getElementById(ele)}
 
 auth.onAuthStateChanged(user => {
   if (user) {$('signup_button').innerHTML = `Welcome, ${user.email.slice(0, user.email.lastIndexOf('@'))}<br><p>Logout</p><br><p>Account</p>`}
@@ -55,6 +55,291 @@ contributeForm["topic"].addEventListener("focus", (e)=>{
 })
 
 
+var prev_key = "";
+$('questionInput').addEventListener('keydown', e => {
+  if (!$('newQstnForm')['edit_version'].checked) {
+      console.log(e.key)
+      var original_node = document.getSelection().focusNode;
+      var original_string = original_node.data;
+      var caret_pos = getCaretPosition(e.target);
+      if (original_string) {
+      var inserted_html = original_string.split('');
+    
+      if (e.key == "-" && inserted_html[inserted_html.length - 1] == "-" && inserted_html[inserted_html.length - 2] == "<") {
+        e.preventDefault();
+        inserted_html.pop();
+        inserted_html[inserted_html.length - 1] = "←";
+        caret_pos -= 1;
+        inserted_html = inserted_html.join('');
+        original_node.data = inserted_html;
+      setCaret(original_node, caret_pos)
+      }
+      else if (e.key == ">" && inserted_html[inserted_html.length - 1] == "-" && inserted_html[inserted_html.length - 2] == "-") {
+        e.preventDefault();
+        inserted_html.pop();
+        inserted_html[inserted_html.length - 1] = "→";
+        caret_pos -= 1;
+        inserted_html = inserted_html.join('');
+        original_node.data = inserted_html;
+      setCaret(original_node, caret_pos)
+      }
+      else if (e.key == ">" && inserted_html[inserted_html.length - 1] == "←") {
+        e.preventDefault();
+        inserted_html[inserted_html.length - 1] = "⇌";
+        inserted_html = inserted_html.join('');
+        original_node.data = inserted_html;
+      setCaret(original_node, caret_pos)
+      }
+
+    }
+      if (e.key == "^") {
+        console.log(1);
+        e.preventDefault();
+        document.execCommand('superscript', false, null)
+        prev_key = "^";
+      }
+      else if (e.key == "_") {
+        console.log(1);
+        e.preventDefault();
+        document.execCommand('subscript', false, null)
+        prev_key = "_";
+      }
+      else if (e.key == "ArrowRight") {
+        console.log(2);
+        prev_key = "";
+        if (document.queryCommandState('superscript')) {document.execCommand('superscript', false, null)}
+        if (document.queryCommandState('subscript')) {document.execCommand('subscript', false, null)}
+      }
+      else if (e.key == "Escape" && prev_key) {
+        e.target.innerHTML = e.target.innerHTML.split('').splice(getCaretPosition(e.target),0,prev_key).join('')
+        prev_key = "";
+      }
+      else {
+        prev_key = "";
+      }
+  }
+})
+$('questionInput').addEventListener('keypress', e => {
+  if ($('newQstnForm')['edit_version'].checked) {
+    prev_key = "";
+    e.preventDefault();
+    var original_node = document.getSelection().focusNode;
+    var original_string = original_node.data;
+    var caret_pos = getCaretPosition(e.target);
+    if (original_string) {
+    var inserted_html = original_string.split('');
+    inserted_html.splice(caret_pos, 0, e.key == "Enter" ? ' ' : e.key);
+  
+    if (inserted_html[inserted_html.length - 1] == "-" && inserted_html[inserted_html.length - 2] == "-" && inserted_html[inserted_html.length - 3] == "<") {
+      inserted_html.pop();
+      inserted_html.pop();
+      inserted_html[inserted_html.length - 1] = "←";
+      caret_pos -= 2;
+    }
+    else if (inserted_html[inserted_html.length - 1] == ">" && inserted_html[inserted_html.length - 2] == "-" && inserted_html[inserted_html.length - 3] == "-") {
+      inserted_html.pop();
+      inserted_html.pop();
+      inserted_html[inserted_html.length - 1] = "→";
+      caret_pos -= 2;
+    }
+    else if (inserted_html[inserted_html.length - 1] == ">" && inserted_html[inserted_html.length - 2] == "←") {
+      inserted_html.pop();
+      inserted_html[inserted_html.length - 1] = "⇌"
+      caret_pos -= 1;
+    }
+    inserted_html = inserted_html.join('');
+    original_node.data = inserted_html;
+  
+    if ((/[\s*=]/).test(e.key)) {
+      var last_word = inserted_html.slice(0,inserted_html.length - 1).split(/[\s*=]/);
+      last_word = last_word[last_word.length - 1]
+      var last_word_index = inserted_html.lastIndexOf(last_word);
+      
+      if (last_word.includes('^') && (last_word.slice(0,getCaretPosition(e.target)).match(/\(/g) || []).length ==  (last_word.slice(0,getCaretPosition(e.target)).match(/\)/g) || []).length) {
+      var slice_portion = last_word_index + last_word.lastIndexOf('^', last_word.length);
+      console.log(slice_portion);
+      var new_string = inserted_html.split('')
+      new_string.splice(slice_portion, caret_pos + 1 - slice_portion, `<sup>${last_word.substr(last_word.lastIndexOf('^') + 1,last_word.length - 1)}</sup> `)
+      inserted_html = new_string.join('').split(/<\/?sup>/);
+      console.log(inserted_html);
+      original_node.parentElement.insertBefore(document.createTextNode(inserted_html[0]), original_node)
+      original_node.parentElement.insertBefore(document.createElement("SUP"), original_node).innerHTML = inserted_html[1];
+      var new_caret = original_node.parentElement.insertBefore(document.createTextNode(inserted_html[2]), original_node)
+      original_node.parentElement.removeChild(original_node);
+      setCaret(new_caret, new_caret.data.length);
+    }
+    else if (last_word.includes('_') && (last_word.slice(0,getCaretPosition(e.target)).match(/\(/g) || []).length ==  (last_word.slice(0,getCaretPosition(e.target)).match(/\)/g) || []).length) {
+      var slice_portion = last_word_index + last_word.lastIndexOf('_', last_word.length);
+      console.log(slice_portion);
+      var new_string = inserted_html.split('')
+      new_string.splice(slice_portion, caret_pos + 1 - slice_portion, `<sub>${last_word.substr(last_word.lastIndexOf('_') + 1,last_word.length - 1)}</sub> `)
+      inserted_html = new_string.join('').split(/<\/?sub>/);
+      console.log(inserted_html);
+      original_node.parentElement.insertBefore(document.createTextNode(inserted_html[0]), original_node)
+      original_node.parentElement.insertBefore(document.createElement("SUB"), original_node).innerHTML = inserted_html[1];
+      var new_caret = original_node.parentElement.insertBefore(document.createTextNode(inserted_html[2]), original_node)
+      original_node.parentElement.removeChild(original_node);
+      setCaret(new_caret, new_caret.data.length);
+    }
+  
+    else {
+      setCaret(original_node, caret_pos + 1);
+      }
+  
+    }
+    else {
+    setCaret(original_node, caret_pos + 1);
+    }
+  
+  
+    }
+    else {
+      e.target.appendChild(document.createTextNode(e.key))
+      setCaret(e.target.childNodes[0], 1);
+    }
+  
+  }
+})
+
+var prev_key2 = "";
+$('answerInput').addEventListener('keydown', e => {
+  if (!$('newQstnForm')['edit_version'].checked) {
+      console.log(e.key)
+      var original_node = document.getSelection().focusNode;
+      var original_string = original_node.data;
+      var caret_pos = getCaretPosition(e.target);
+      if (original_string) {
+      var inserted_html = original_string.split('');
+    
+      if (inserted_html[inserted_html.length - 1] == "-" && inserted_html[inserted_html.length - 2] == "-" && inserted_html[inserted_html.length - 3] == "<") {
+        e.preventDefault();
+        inserted_html.pop();
+        inserted_html.pop();
+        inserted_html[inserted_html.length - 1] = "←";
+        caret_pos -= 2;
+      }
+      else if (inserted_html[inserted_html.length - 1] == ">" && inserted_html[inserted_html.length - 2] == "-" && inserted_html[inserted_html.length - 3] == "-") {
+        e.preventDefault();
+        inserted_html.pop();
+        inserted_html.pop();
+        inserted_html[inserted_html.length - 1] = "→";
+        caret_pos -= 2;
+      }
+      else if (inserted_html[inserted_html.length - 1] == ">" && inserted_html[inserted_html.length - 2] == "←") {
+        e.preventDefault();
+        inserted_html.pop();
+        inserted_html[inserted_html.length - 1] = "⇌"
+        caret_pos -= 1;
+      }
+      inserted_html = inserted_html.join('');
+      original_node.data = inserted_html;
+    }
+      if (e.key == "^") {
+        e.preventDefault();
+        document.execCommand('superscript', false, null)
+        prev_key2 = "^";
+      }
+      else if (e.key == "_") {
+        e.preventDefault();
+        document.execCommand('subscript', false, null)
+        prev_key2 = "_";
+      }
+      else if (e.key == "ArrowRight") {
+        prev_key2 = "";
+        if (document.queryCommandState('superscript')) {document.execCommand('superscript', false, null)}
+        if (document.queryCommandState('subscript')) {document.execCommand('subscript', false, null)}
+      }
+      else if (e.key == "Escape" && prev_key) {
+        e.target.innerHTML = e.target.innerHTML.split('').splice(getCaretPosition(e.target),0,prev_key).join('')
+        prev_key2 = "";
+      }
+      else {
+        prev_key2 = "";
+      }
+      setCaret(original_node, caret_pos)
+  }
+})
+$('answerInput').addEventListener('keypress', e => {
+  if ($('newQstnForm')['edit_version'].checked) {
+    prev_key2 = "";
+    e.preventDefault();
+    var original_node = document.getSelection().focusNode;
+    var original_string = original_node.data;
+    var caret_pos = getCaretPosition(e.target);
+    if (original_string) {
+    var inserted_html = original_string.split('');
+    inserted_html.splice(caret_pos, 0, e.key == "Enter" ? ' ' : e.key);
+  
+    if (inserted_html[inserted_html.length - 1] == "-" && inserted_html[inserted_html.length - 2] == "-" && inserted_html[inserted_html.length - 3] == "<") {
+      inserted_html.pop();
+      inserted_html.pop();
+      inserted_html[inserted_html.length - 1] = "←";
+      caret_pos -= 2;
+    }
+    else if (inserted_html[inserted_html.length - 1] == ">" && inserted_html[inserted_html.length - 2] == "-" && inserted_html[inserted_html.length - 3] == "-") {
+      inserted_html.pop();
+      inserted_html.pop();
+      inserted_html[inserted_html.length - 1] = "→";
+      caret_pos -= 2;
+    }
+    else if (inserted_html[inserted_html.length - 1] == ">" && inserted_html[inserted_html.length - 2] == "←") {
+      inserted_html.pop();
+      inserted_html[inserted_html.length - 1] = "⇌"
+      caret_pos -= 1;
+    }
+    inserted_html = inserted_html.join('');
+    original_node.data = inserted_html;
+  
+    if ((/[\s*=]/).test(e.key)) {
+      var last_word = inserted_html.slice(0,inserted_html.length - 1).split(/[\s*=]/);
+      last_word = last_word[last_word.length - 1]
+      var last_word_index = inserted_html.lastIndexOf(last_word);
+      
+      if (last_word.includes('^') && (last_word.slice(0,getCaretPosition(e.target)).match(/\(/g) || []).length ==  (last_word.slice(0,getCaretPosition(e.target)).match(/\)/g) || []).length) {
+      var slice_portion = last_word_index + last_word.lastIndexOf('^', last_word.length);
+      console.log(slice_portion);
+      var new_string = inserted_html.split('')
+      new_string.splice(slice_portion, caret_pos + 1 - slice_portion, `<sup>${last_word.substr(last_word.lastIndexOf('^') + 1,last_word.length - 1)}</sup> `)
+      inserted_html = new_string.join('').split(/<\/?sup>/);
+      console.log(inserted_html);
+      original_node.parentElement.insertBefore(document.createTextNode(inserted_html[0]), original_node)
+      original_node.parentElement.insertBefore(document.createElement("SUP"), original_node).innerHTML = inserted_html[1];
+      var new_caret = original_node.parentElement.insertBefore(document.createTextNode(inserted_html[2]), original_node)
+      original_node.parentElement.removeChild(original_node);
+      setCaret(new_caret, new_caret.data.length);
+    }
+    else if (last_word.includes('_') && (last_word.slice(0,getCaretPosition(e.target)).match(/\(/g) || []).length ==  (last_word.slice(0,getCaretPosition(e.target)).match(/\)/g) || []).length) {
+      var slice_portion = last_word_index + last_word.lastIndexOf('_', last_word.length);
+      console.log(slice_portion);
+      var new_string = inserted_html.split('')
+      new_string.splice(slice_portion, caret_pos + 1 - slice_portion, `<sub>${last_word.substr(last_word.lastIndexOf('_') + 1,last_word.length - 1)}</sub> `)
+      inserted_html = new_string.join('').split(/<\/?sub>/);
+      console.log(inserted_html);
+      original_node.parentElement.insertBefore(document.createTextNode(inserted_html[0]), original_node)
+      original_node.parentElement.insertBefore(document.createElement("SUB"), original_node).innerHTML = inserted_html[1];
+      var new_caret = original_node.parentElement.insertBefore(document.createTextNode(inserted_html[2]), original_node)
+      original_node.parentElement.removeChild(original_node);
+      setCaret(new_caret, new_caret.data.length);
+    }
+  
+    else {
+      setCaret(original_node, caret_pos + 1);
+      }
+  
+    }
+    else {
+    setCaret(original_node, caret_pos + 1);
+    }
+  
+  
+    }
+    else {
+      e.target.appendChild(document.createTextNode(e.key))
+      setCaret(e.target.childNodes[0], 1);
+    }
+  
+  }
+})
 
 
 contributeForm.addEventListener('submit', (e)=>{
@@ -228,3 +513,127 @@ document.addEventListener("click", function (e) {
     closeAllLists(e.target);
 });
 } 
+
+function doGetCaretPosition (oField) {
+
+  // Initialize
+  var iCaretPos = 0;
+
+  // IE Support
+  if (document.selection) {
+
+    // Set focus on the element
+    oField.focus();
+
+    // To get cursor position, get empty selection range
+    var oSel = document.selection.createRange();
+
+    // Move selection start to 0 position
+    oSel.moveStart('character', -oField.innerHTML.length);
+
+    // The caret position is selection length
+    iCaretPos = oSel.text.length;
+  }
+
+  // Firefox support
+  else if (oField.selectionStart || oField.selectionStart == '0')
+    iCaretPos = oField.selectionDirection=='backward' ? oField.selectionStart : oField.selectionEnd;
+
+  // Return results
+  return iCaretPos;
+}
+
+$('answerInput').addEventListener('click', e => {
+  getCaretPosition(e.target)})
+
+function getCaretPosition(editableDiv) {
+  var caretPos = 0,
+    sel, range;
+  if (window.getSelection) {
+    sel = window.getSelection();
+    if (sel.rangeCount) {
+      range = sel.getRangeAt(0);
+      if (range.commonAncestorContainer.parentNode == editableDiv) {
+        caretPos = range.endOffset;
+      }
+    }
+  } else if (document.selection && document.selection.createRange) {
+    range = document.selection.createRange();
+    if (range.parentElement() == editableDiv) {
+      var tempEl = document.createElement("span");
+      editableDiv.insertBefore(tempEl, editableDiv.firstChild);
+      var tempRange = range.duplicate();
+      tempRange.moveToElementText(tempEl);
+      tempRange.setEndPoint("EndToEnd", range);
+      caretPos = tempRange.text.length;
+    }
+  }
+  return caretPos;
+}
+
+// Credits: http://blog.vishalon.net/index.php/javascript-getting-and-setting-caret-position-in-textarea/
+function setCaretPosition(ctrl, pos) {
+  // Modern browsers
+  if (ctrl.setSelectionRange) {
+    ctrl.focus();
+    ctrl.setSelectionRange(pos, pos);
+  
+  // IE8 and below
+  } else if (ctrl.createTextRange) {
+    var range = ctrl.createTextRange();
+    range.collapse(true);
+    range.moveEnd('character', pos);
+    range.moveStart('character', pos);
+    range.select();
+  }
+}
+
+copy_arr = (arr) => {
+  var int = [];
+  arr.forEach(ele => {int.push(ele)})
+  return int;
+}
+
+calculate_total_carets = (focussed_element, master_parent) => {
+  var reached_node = false;
+  var total = 0;
+  if (focussed_element == master_parent || ([]).indexOf.call(master_parent.childNodes, focussed_element) != -1) {
+    ([]).forEach.call(master_parent.childNodes, (child) => {
+      if (!reached_node) {
+      if (child == focussed_element) {
+        var chopped_html = child.data;
+        console.log(chopped_html);
+        chopped_html = chopped_html.replaceAll(/[\,\.\/\;\'\[\]]/g,'1').replaceAll(/&#\d{4}/g, ',').replaceAll(/&#\d{5}/g, ';')
+        .replaceAll(/&#\d{6}/g, '\'').replaceAll('&nbsp', '[')
+        .replaceAll('&lt;', '.').replaceAll('&gt;', '.').replaceAll('\\\\','\\').replaceAll('&amp','.')
+        chopped_html = chopped_html.slice(0, getCaretPosition(focussed_element.parentElement) + 1).replaceAll(',','666666').replaceAll(';','7777777')
+        .replaceAll('\'', '88888888').replaceAll('[', '55555').replaceAll('.','4444').replaceAll('\\', '22')
+        total += chopped_html.length; reached_node = true;
+      }
+      else {
+        if (child.nodeName == "#text") {total += child.data.length}
+        else {total += (child.innerHTML + child.outerHTML).length}
+    }
+  }
+    })
+  }
+  else {
+  }
+  return total;
+}
+
+// document.addEventListener('keypress', e => {
+//   console.log(calculate_total_carets(document.getSelection().focusNode, $('answerInput')));
+// })
+
+function setCaret(child, num, ele=null) {
+  var el = document.getElementById(ele ? ele : child.parentElement)
+  var range = document.createRange()
+  var sel = window.getSelection()
+  
+  range.setStart(child, num)
+  range.collapse(true)
+  
+  sel.removeAllRanges()
+  sel.addRange(range)
+}

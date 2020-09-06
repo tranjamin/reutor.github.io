@@ -252,3 +252,13 @@ li.about{
   #account_table th:first-of-type {
     background-color: rgb(225, 215, 255)
   }
+
+  #questionInput, #answerInput {
+      display: block;
+      width: 80%;
+      height: 60px;
+      border: 0.5pt black solid;
+      overflow-y: scroll;
+      word-wrap: break-word;
+
+  }

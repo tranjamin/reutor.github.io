@@ -1,4 +1,4 @@
-const $ = ele => {return document.getElementById(ele)}
+$ = ele => {return document.getElementById(ele)}
 
 auth.onAuthStateChanged(user => {
   if (user) {$('signup_button').innerHTML = `Welcome, ${user.email.slice(0, user.email.lastIndexOf('@'))}<br><p>Logout</p><br><p>Account</p>`}
