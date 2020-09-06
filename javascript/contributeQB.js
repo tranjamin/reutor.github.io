@@ -357,8 +357,8 @@ contributeForm.addEventListener('submit', (e)=>{
   database.ref(`questions/${contributeForm['subject'].value}/${contributeForm['unit'].value}/${Math.round(Math.random()*100000000)}`).set({
     difficulty: contributeForm['difficulty'].value,
     contributer: contributeForm['contributer'].value,
-    question: contributeForm['questionInput'].value.replaceAll("\n", "</br>"),
-    answer: contributeForm['answerInput'].value.replaceAll("\n", "</br>"),
+    question: $('questionInput').innerHTML.replaceAll("\n", "</br>"),
+    answer: $('answerInput').innerHTML.replaceAll("\n", "</br>"),
     //workingOut: contributeForm['workingOutInput'].value.replaceAll().replaceAll("\n", "</br>"),
     tech: contributeForm['tech'].value,
     topic: contributeForm["topic"].value
