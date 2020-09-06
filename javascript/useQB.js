@@ -158,10 +158,28 @@ updateTopicDiv = function(){
                     var nQstnAns = document.createElement("span")
                     nQstnAns.className = "QstnAnswer"
                     nQstnAns.innerHTML = question[0]["answer"]
+
+                    var nQstnOptionsTooltip = document.createElement('span');
+                    nQstnOptionsTooltip.innerHTML = "Save to favourites";
+                    nQstnOptionsTooltip.setAttribute('class', 'tooltiptext')
+
+                    var nQstnOptions = document.createElement('span');
+                    nQstnOptions.innerHTML = "&#9734";
+                    nQstnOptions.setAttribute('class', 'options')
+            
+                    nQstnOptions.addEventListener('click', e => {
+                        e.target.innerHTML = e.target.innerHTML == "☆" ? "★" : "☆"
+                    })
+                    document.addEventListener('mousemove', e => {
+                        ([]).forEach.call(document.getElementsByClassName('tooltiptext'), ele => {ele.style.visibility = "hidden"})
+                        if (e.target.getAttribute('class') == "options") {
+                            e.target.previousElementSibling.style.visibility = "visible";
+                        }
+                    })
             
             
-            
-            
+                    nQstnInfo.appendChild(nQstnOptionsTooltip)
+                    nQstnInfo.appendChild(nQstnOptions)
                     questionZone.appendChild(nQstnInfo)
                     questionZone.appendChild(nQstnEl)
                     questionZone.appendChild(nQstnAnsLabel)
@@ -204,3 +222,4 @@ function shuffle(array) {
       [array[i], array[j]] = [array[j], array[i]];
     }
   }
+

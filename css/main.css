@@ -262,3 +262,26 @@ li.about{
       word-wrap: break-word;
 
   }
+
+  .options {
+      position: absolute;
+      left: 22%;
+      cursor: pointer;
+      font-size: 2em;
+  }
+  .tooltiptext {
+    visibility: hidden;
+    background-color: rgb(225, 215, 255);
+    color: black;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+   
+    /* Position the tooltip text - see examples below! */
+    position: relative;
+    height: 12px;
+    bottom: 12px;
+    right: 65%;
+    z-index: 1;
+  }
+
