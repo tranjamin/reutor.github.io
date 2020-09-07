@@ -44,7 +44,7 @@ $('signup_form').getElementsByTagName('form')[0].addEventListener('submit', e =>
 $('signup_form').getElementsByTagName('form')[1].addEventListener('submit', e => {
     e.preventDefault();
     ([]).forEach.call(document.getElementsByClassName('error'), ele => {ele.innerHTML = "";})
-    if (e.target.password.value == e.target.confirm.value) {
+    if (e.target.passwordSU.value == e.target.confirmSU.value) {
     auth.createUserWithEmailAndPassword(e.target.usernameSU.value + "@rutor.com", e.target.passwordSU.value).then(() => {window.location.reload()}).catch(error => {e.target.nextElementSibling.innerHTML = error.message});
     }
     else {
