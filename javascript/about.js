@@ -32,13 +32,13 @@ $('signup_button').addEventListener('click', e => {
 $('signup_form').getElementsByTagName('form')[0].addEventListener('submit', e => {
     e.preventDefault();
     ([]).forEach.call(document.getElementsByClassName('error'), ele => {ele.innerHTML = "";})
-    auth.signInWithEmailAndPassword(e.target.username.value + "@rutor.com", e.target.password.value).then(() => {window.location.reload()}).catch(error => {e.target.nextElementSibling.innerHTML = error.message});
+    auth.signInWithEmailAndPassword(e.target.usernameLI.value + "@rutor.com", e.target.passwordLI.value).then(() => {window.location.reload()}).catch(error => {e.target.nextElementSibling.innerHTML = error.message});
 })
 $('signup_form').getElementsByTagName('form')[1].addEventListener('submit', e => {
     e.preventDefault();
     ([]).forEach.call(document.getElementsByClassName('error'), ele => {ele.innerHTML = "";})
-    if (e.target.password.value == e.target.confirm.value) {
-    auth.createUserWithEmailAndPassword(e.target.username.value + "@rutor.com", e.target.password.value).then(() => {window.location.reload()}).catch(error => {e.target.nextElementSibling.innerHTML = error.message});
+    if (e.target.passwordSU.value == e.target.confirmSU.value) {
+    auth.createUserWithEmailAndPassword(e.target.usernameSU.value + "@rutor.com", e.target.passwordSU.value).then(() => {window.location.reload()}).catch(error => {e.target.nextElementSibling.innerHTML = error.message});
     }
     else {
         e.target.nextElementSibling.innerHTML = "Passwords do not match";
