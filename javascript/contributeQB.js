@@ -56,7 +56,9 @@ updateAutoArr = function(){
 
 
 contributeForm["topic"].addEventListener("focus", (e)=>{
-  updateAutoArr()
+  if ((contributeForm['subject'].value != "") && (contributeForm['unit'].value != "")){
+    updateAutoArr()
+  }
 })
 
 

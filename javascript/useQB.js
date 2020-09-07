@@ -158,19 +158,60 @@ updateTopicDiv = function(){
                     nQstnEl.innerHTML = question[0]["question"];
                     nQstnEl.className = "question";  
             
-                    var nQstnAnsLabel = document.createElement("span")
-                    nQstnAnsLabel.innerHTML = "ANSWER: <br>"
+                    var nQstnAnsButt = document.createElement("button")
+                    nQstnAnsButt.innerHTML = "REVEAL ANSWER"
                     var nQstnAns = document.createElement("span")
                     nQstnAns.className = "QstnAnswer"
-                    nQstnAns.innerHTML = question[0]["answer"]
+                    nQstnAns.style.display = "none";
+                    nQstnAns.innerHTML = "<br>"+question[0]["answer"]
+
+                    nQstnAnsButt.addEventListener("click", function(event){
+                        if(nQstnAnsButt.innerHTML == "UN-REVEAL ANSWER"){
+                            nQstnAns.style.display = "none"
+                            nQstnAnsButt.innerHTML = "REVEAL ANSWER"
+                        } else{
+                            nQstnAns.style.display = "block"
+                            nQstnAnsButt.innerHTML = "UN-REVEAL ANSWER"
+                        }
+                    })
+                    
+                    nQstnSaveButt = document.createElement("button")
+                    nQstnSaveButt.innerHTML = "SAVE"
+                    nQstnSaveDiv = document.createElement("div")
+                    nQstnSaveDiv.style.display = "none"
+
+                    nQstnSaveToCorrect = document.createElement("input"); nQstnSaveToCorrect.type = "checkbox"
+                    nQstnSaveToCorrectL = document.createElement("lable"); nQstnSaveToCorrectL.innerHTML = "Correct"
+                    nQstnSaveToIncorrect = document.createElement("input"); nQstnSaveToIncorrect.type = "checkbox"
+                    nQstnSaveToIncorrectL = document.createElement("lable"); nQstnSaveToIncorrectL.innerHTML = "Incorrect"
+                    nQstnSaveToDone = document.createElement("input"); nQstnSaveToDone.type = "checkbox"
+                    nQstnSaveToDoneL = document.createElement("lable"); nQstnSaveToDoneL.innerHTML = "Done"
+                    nQstnSaveDiv.appendChild(nQstnSaveToCorrect); nQstnSaveDiv.appendChild(nQstnSaveToCorrectL); nQstnSaveDiv.appendChild(nQstnSaveToIncorrect); nQstnSaveDiv.appendChild(nQstnSaveToIncorrectL); nQstnSaveDiv.appendChild(nQstnSaveToDone); nQstnSaveDiv.appendChild(nQstnSaveToDoneL);
+
+
+
+                    nQstnSaveButt.addEventListener("click", function(event){
+                        if(event.target.innerHTML == "-SAVE-"){
+                            event.target.nextElementSibling.style.display = "none"
+                            event.target.innerHTML = "SAVE"
+                            console.log(nQstnSaveButt.innerHTML)
+                        } else{
+                            event.target.innerHTML = "-SAVE-"
+                            event.target.nextElementSibling.style.display = "block"
+                            console.log(nQstnSaveButt.innerHTML)
+                        }
+                    })
+
             
             
             
             
                     questionZone.appendChild(nQstnInfo)
                     questionZone.appendChild(nQstnEl)
-                    questionZone.appendChild(nQstnAnsLabel)
+                    questionZone.appendChild(nQstnAnsButt)
                     questionZone.appendChild(nQstnAns)
+                    questionZone.appendChild(nQstnSaveButt)
+                    questionZone.appendChild(nQstnSaveDiv)
                     questionZone.appendChild(LINE)
                 })
 
@@ -188,13 +229,21 @@ updateTopicDiv = function(){
         })
     })
 }
-updateTopicDiv()
+
+if ((questionForm['subject'].value != "") && (questionForm['unit'].value != "")){
+    updateTopicDiv()
+}
+
 
 questionForm["subject"].addEventListener("change", function(){
-    updateTopicDiv()
+    if ((questionForm['subject'].value != "") && (questionForm['unit'].value != "")){
+        updateTopicDiv()
+    }
 })
 questionForm["unit"].addEventListener("change", function(){
-    updateTopicDiv()
+    if ((questionForm['subject'].value != "") && (questionForm['unit'].value != "")){
+        updateTopicDiv()
+    }
 })
 
 function shuffle(array) {

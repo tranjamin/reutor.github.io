@@ -9,7 +9,7 @@ body {
 
 .pageContent {
     background-color: white;
-    margin-left: 19%;
+    margin-left: 20%;
     margin-right: 20%;
 
     padding: 1%;
@@ -148,12 +148,21 @@ li.about{
 }
 
 #Logo {
+    display:inline-block;
     margin-top: 0.5%;
-    text-decoration: underline solid rgb(109, 185, 94) 13px;
+    /* text-decoration: underline solid rgb(109, 185, 94) 43px;
     text-decoration-line: underline;
     text-decoration-thickness: 13px;
     text-decoration-color: rgb(109,185,94);
-    text-decoration-style: solid;
+    text-decoration-style: solid; */
+    border-bottom: solid rgb(109,185,94) 13px;
+    padding-bottom: 0%;
+    margin-bottom:0%;
+    height: 85px;
+}
+
+header > h1 {
+    margin-top: 1%;
 }
 
 .question {
@@ -173,7 +182,7 @@ li.about{
 
 .QstnAnswer {
     color: black;
-    background-color: black;
+    /* background-color: black; */
     align-self: center;
     text-align: center;
 }
