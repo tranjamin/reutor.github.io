@@ -187,6 +187,27 @@ header > h1 {
     text-align: center;
 }
 
+.QstnAnswerButt {
+    background-color: rgb(206, 194, 194);
+    cursor: pointer;
+    padding: 0.5%;
+    border: solid grey 1pt;
+    margin: 0 0.2%;
+    text-align: center;
+}
+
+.QstnAnswerButt2 {
+    background-color: rgb(206, 194, 194);
+    cursor: pointer;
+    padding: 0.5%;
+    border: solid grey 1pt;
+    margin: 3% 0.8% 0;
+    display: inline-block;
+    width: 22%;
+    text-align: center;
+    font-size: 80%;
+    justify-self: space-around;
+}
 
 .autocomplete-items {
     /* position: absolute; */
@@ -288,3 +309,30 @@ header > h1 {
   #account_table th:first-of-type {
     background-color: rgb(225, 215, 255)
   }
+
+  .options {
+    position: absolute;
+    left: 22%;
+    cursor: pointer;
+    font-size: 2em;
+}
+.options2 {
+    position: absolute;
+    left: 75%;
+    cursor: pointer;
+    font-size: 2em;
+}
+
+
+#signup_form input:-webkit-autofill,
+#signup_form input:-webkit-autofill:hover,
+#signup_form input:-webkit-autofill:focus,
+#signup_form input:-webkit-autofill:active
+ {
+    box-shadow: 0 0 0 30px white inset !important;
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
+#signup_form input {
+    filter: none;
+}

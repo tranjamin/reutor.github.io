@@ -1,4 +1,4 @@
-const $ = ele => {return document.getElementById(ele)}
+$ = ele => {return document.getElementById(ele)}
 
 auth.onAuthStateChanged(user => {
     console.log("auth state change triggered")
@@ -9,6 +9,11 @@ auth.onAuthStateChanged(user => {
     }
 })
 
+document.addEventListener('click', e => {
+    if ($('signup_form').style.display == "block" && $('signup_form') != e.target && $('signup_button') != e.target && !$('signup_form').contains(e.target)) {
+        $('signup_form').style.display = "none";
+    }
+})
 
 $('signup_button').addEventListener('click', e => {
   if (e.target.innerHTML == "LOGIN/SIGNUP") {
@@ -158,60 +163,168 @@ updateTopicDiv = function(){
                     nQstnEl.innerHTML = question[0]["question"];
                     nQstnEl.className = "question";  
             
-                    var nQstnAnsButt = document.createElement("button")
-                    nQstnAnsButt.innerHTML = "REVEAL ANSWER"
+                    var nQstnAnsButt = document.createElement("span")
+                    nQstnAnsButt.innerHTML = "Reveal Answer";
+                    nQstnAnsButt.setAttribute('class', 'QstnAnswerButt')
                     var nQstnAns = document.createElement("span")
-                    nQstnAns.className = "QstnAnswer"
+                    nQstnAns.setAttribute('class',"QstnAnswer");
                     nQstnAns.style.display = "none";
                     nQstnAns.innerHTML = "<br>"+question[0]["answer"]
 
-                    nQstnAnsButt.addEventListener("click", function(event){
-                        if(nQstnAnsButt.innerHTML == "UN-REVEAL ANSWER"){
-                            nQstnAns.style.display = "none"
-                            nQstnAnsButt.innerHTML = "REVEAL ANSWER"
-                        } else{
-                            nQstnAns.style.display = "block"
-                            nQstnAnsButt.innerHTML = "UN-REVEAL ANSWER"
+                    var nQstnOptions = document.createElement('span');
+                    nQstnOptions.innerHTML = "<span>&#9734</span><span>&#9998</span>";
+                    nQstnOptions.setAttribute('class', 'options')
+
+                    var nQstnOptions2 = document.createElement('span');
+                    nQstnOptions2.innerHTML = "<span>&#9872</span><span>&#128465</span>";
+                    nQstnOptions2.setAttribute('class', 'options2')
+            
+                    nQstnOptions.getElementsByTagName('span')[0].addEventListener('click', e => {
+                        e.target.innerHTML = e.target.innerHTML == "☆" ? "★" : "☆"
+                        
+// <-------------------------------------PUT-CODE-TO-TOGGLE-BOOKMARK-HERE---------------------------------------------> //
+                    })
+                    nQstnOptions2.getElementsByTagName('span')[0].addEventListener('click', e => {
+                        e.target.innerHTML = e.target.innerHTML == "⚐" ? "⚑" : "⚐"
+
+// <-------------------------------------PUT-CODE-TO-TOGGLE-FLAG-FOR-SPAM-(NOTIFIES-ADMIN)-HERE---------------------------------------------> //
+                    })
+                    nQstnOptions2.getElementsByTagName('span')[1].addEventListener('click', e => {
+                        if (e.target.style['font-weight'] != "900") {
+                            e.target.style['font-weight'] = '900';
+                            var parent = e.target.parentElement.parentElement.parentElement;
+                            parent.style.overflow = "hidden";
+                            var interval = setInterval(() => {
+                                parent.style.height = parseFloat(getComputedStyle(parent).height) - 3 + "px";
+                                if (parseFloat(getComputedStyle(parent).height) < e.target.getBoundingClientRect().bottom - e.target.parentElement.parentElement.parentElement.getBoundingClientRect().top + 3) {
+                                    e.target.parentElement.parentElement.getElementsByClassName('options')[0].getElementsByTagName('span')[0].style.display = "none";
+                                    e.target.parentElement.parentElement.getElementsByClassName('options')[0].getElementsByTagName('span')[1].style.display = "none";
+                                    e.target.parentElement.parentElement.getElementsByClassName('options2')[0].getElementsByTagName('span')[0].style.display = "none";
+                                    e.target.parentElement.parentElement.parentElement.getElementsByClassName('question')[0].style.visibility = "hidden";
+                                    clearInterval(interval)
+// <-----------------------------PUT-CODE-TO-REMOVE-QUESTION-FROM-FEED-HERE----------------------------------------> //
+
+                                
+                                }
+                            }, 1)
                         }
+                        else {
+                            e.target.style['font-weight'] = '400';
+                            e.target.parentElement.parentElement.getElementsByClassName('options')[0].getElementsByTagName('span')[0].style.display = "initial";
+                            e.target.parentElement.parentElement.getElementsByClassName('options')[0].getElementsByTagName('span')[1].style.display = "initial";
+                            e.target.parentElement.parentElement.getElementsByClassName('options2')[0].getElementsByTagName('span')[0].style.display = "initial";                          
+                            e.target.parentElement.parentElement.parentElement.getElementsByClassName('question')[0].style.visibility = "visible";
+                            var parent = e.target.parentElement.parentElement.parentElement;
+                            var prev_height = getComputedStyle(parent).height;
+                            parent.style.height = "initial";
+                            var final_height = getComputedStyle(parent).height;
+                            parent.style.height = prev_height;
+                            var interval = setInterval(() => {
+                                parent.style.height = parseFloat(getComputedStyle(parent).height) + 3 + "px";
+                                if (parseFloat(getComputedStyle(parent).height) > parseFloat(final_height)) {
+                                    parent.style.overflow = "visible"; parent.style.height = final_height; parent.style.height = "unset"; clearInterval(interval)}
+                            
+// <-----------------------------PUT-CODE-TO-RE-ADD-QUESTION-FROM-FEED-HERE----------------------------------------> //
+                            
+                                }, 1)
+
+                        }
+                    })
+
+                    nQstnAnsButt.addEventListener('click', e => {
+                        e.target.nextElementSibling.style.display = getComputedStyle(e.target.nextElementSibling).display != "none" ? "none" : "block";
+                        e.target.nextElementSibling.nextElementSibling.style.display = e.target.nextElementSibling.style.display == "none" ? "none" : "inline-block";
+                        e.target.nextElementSibling.nextElementSibling.nextElementSibling.style.display = e.target.nextElementSibling.style.display == "none" ? "none" : "inline-block";
+                        e.target.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.display = e.target.nextElementSibling.style.display == "none" ? "none" : "inline-block";
+                        e.target.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.style.display = e.target.nextElementSibling.style.display == "none" ? "none" : "inline-block";
+                        e.target.innerHTML = getComputedStyle(e.target.nextElementSibling).display != "none" ? "Hide Answer" : "Reveal Answer";
                     })
                     
-                    nQstnSaveButt = document.createElement("button")
-                    nQstnSaveButt.innerHTML = "SAVE"
-                    nQstnSaveDiv = document.createElement("div")
-                    nQstnSaveDiv.style.display = "none"
+                    nQstnAnsCompleted = document.createElement("span");
+                    nQstnAnsCompleted.innerHTML = "Mark as Completed";
+                    nQstnAnsCompleted.setAttribute('class', 'QstnAnswerButt2')
 
-                    nQstnSaveToCorrect = document.createElement("input"); nQstnSaveToCorrect.type = "checkbox"
-                    nQstnSaveToCorrectL = document.createElement("lable"); nQstnSaveToCorrectL.innerHTML = "Correct"
-                    nQstnSaveToIncorrect = document.createElement("input"); nQstnSaveToIncorrect.type = "checkbox"
-                    nQstnSaveToIncorrectL = document.createElement("lable"); nQstnSaveToIncorrectL.innerHTML = "Incorrect"
-                    nQstnSaveToDone = document.createElement("input"); nQstnSaveToDone.type = "checkbox"
-                    nQstnSaveToDoneL = document.createElement("lable"); nQstnSaveToDoneL.innerHTML = "Done"
-                    nQstnSaveDiv.appendChild(nQstnSaveToCorrect); nQstnSaveDiv.appendChild(nQstnSaveToCorrectL); nQstnSaveDiv.appendChild(nQstnSaveToIncorrect); nQstnSaveDiv.appendChild(nQstnSaveToIncorrectL); nQstnSaveDiv.appendChild(nQstnSaveToDone); nQstnSaveDiv.appendChild(nQstnSaveToDoneL);
+                    nQstnAnsStudy = document.createElement("span");
+                    nQstnAnsStudy.innerHTML = "Keep Practicing";
+                    nQstnAnsStudy.setAttribute('class', 'QstnAnswerButt2')
+                    
+                    nQstnAnsAlternate = document.createElement("span");
+                    nQstnAnsAlternate.innerHTML = "Suggest Alternate Answer";
+                    nQstnAnsAlternate.setAttribute('class', 'QstnAnswerButt2')
+                    
+                    nQstnAnsTopic = document.createElement("span");
+                    nQstnAnsTopic.innerHTML = "Suggest Alternate Unit/Topic";
+                    nQstnAnsTopic.setAttribute('class', 'QstnAnswerButt2')
 
 
+                    nQstnAnsCompleted.style.display = "none";
+                    nQstnAnsStudy.style.display = "none";
+                    nQstnAnsAlternate.style.display = "none";
+                    nQstnAnsTopic.style.display = "none";
 
-                    nQstnSaveButt.addEventListener("click", function(event){
-                        if(event.target.innerHTML == "-SAVE-"){
-                            event.target.nextElementSibling.style.display = "none"
-                            event.target.innerHTML = "SAVE"
-                            console.log(nQstnSaveButt.innerHTML)
-                        } else{
-                            event.target.innerHTML = "-SAVE-"
-                            event.target.nextElementSibling.style.display = "block"
-                            console.log(nQstnSaveButt.innerHTML)
-                        }
+                    nQstnAnsCompleted.addEventListener('click', e => {
+                        //mark as completed
+                    })
+                    nQstnAnsStudy.addEventListener('click', e => {
+                        //mark as for practice
+                    })
+                    nQstnAnsAlternate.addEventListener('click', e => {
+                        //send off alternate answer
+                    })
+                    nQstnAnsTopic.addEventListener('click', e => {
+                        //send off alternate topic
                     })
 
+
+                    // nQstnSaveButt = document.createElement("button")
+                    // nQstnSaveButt.innerHTML = "SAVE"
+                    // nQstnSaveDiv = document.createElement("div")
+                    // nQstnSaveDiv.style.display = "none"
+
+                    // nQstnSaveToCorrect = document.createElement("input"); nQstnSaveToCorrect.type = "checkbox"
+                    // nQstnSaveToCorrectL = document.createElement("lable"); nQstnSaveToCorrectL.innerHTML = "Correct"
+                    // nQstnSaveToIncorrect = document.createElement("input"); nQstnSaveToIncorrect.type = "checkbox"
+                    // nQstnSaveToIncorrectL = document.createElement("lable"); nQstnSaveToIncorrectL.innerHTML = "Incorrect"
+                    // nQstnSaveToDone = document.createElement("input"); nQstnSaveToDone.type = "checkbox"
+                    // nQstnSaveToDoneL = document.createElement("lable"); nQstnSaveToDoneL.innerHTML = "Done"
+                    // nQstnSaveDiv.appendChild(nQstnSaveToCorrect); nQstnSaveDiv.appendChild(nQstnSaveToCorrectL); nQstnSaveDiv.appendChild(nQstnSaveToIncorrect); nQstnSaveDiv.appendChild(nQstnSaveToIncorrectL); nQstnSaveDiv.appendChild(nQstnSaveToDone); nQstnSaveDiv.appendChild(nQstnSaveToDoneL);
+
+
+
+                    // nQstnSaveButt.addEventListener("click", function(event){
+                    //     if(event.target.innerHTML == "-SAVE-"){
+                    //         event.target.nextElementSibling.style.display = "none"
+                    //         event.target.innerHTML = "SAVE"
+                    //         console.log(nQstnSaveButt.innerHTML)
+                    //     } else{
+                    //         event.target.innerHTML = "-SAVE-"
+                    //         event.target.nextElementSibling.style.display = "block"
+                    //         console.log(nQstnSaveButt.innerHTML)
+                    //     }
+                    // })
+
             
             
             
             
-                    questionZone.appendChild(nQstnInfo)
-                    questionZone.appendChild(nQstnEl)
-                    questionZone.appendChild(nQstnAnsButt)
-                    questionZone.appendChild(nQstnAns)
-                    questionZone.appendChild(nQstnSaveButt)
-                    questionZone.appendChild(nQstnSaveDiv)
+
+                    var individual_question = document.createElement("DIV")
+                    individual_question.setAttribute('class', 'individual_question')
+
+                    nQstnInfo.appendChild(nQstnOptions)
+                    nQstnInfo.appendChild(nQstnOptions2)
+                    individual_question.appendChild(nQstnInfo)
+                    individual_question.appendChild(nQstnEl)
+                    individual_question.appendChild(nQstnAnsButt)
+                    individual_question.appendChild(nQstnAns)
+                    individual_question.appendChild(nQstnAnsCompleted);
+                    individual_question.appendChild(nQstnAnsStudy);
+                    individual_question.appendChild(nQstnAnsAlternate);
+                    individual_question.appendChild(nQstnAnsTopic);
+
+                    // questionZone.appendChild(nQstnSaveButt)
+                    // questionZone.appendChild(nQstnSaveDiv)
+                    questionZone.appendChild(individual_question);
                     questionZone.appendChild(LINE)
                 })
 

@@ -20,6 +20,12 @@ auth.onAuthStateChanged(user => {
     }
 })
 
+document.addEventListener('click', e => {
+    if ($('signup_form').style.display == "block" && $('signup_form') != e.target && $('signup_button') != e.target && !$('signup_form').contains(e.target)) {
+        $('signup_form').style.display = "none";
+    }
+})
+
 $('signup_button').addEventListener('click', e => {
     if (e.target.innerHTML == "LOGIN/SIGNUP") {
     $('signup_form').style.display = $('signup_form').style.display == "block" ? "none" : "block";}
