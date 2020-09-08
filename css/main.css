@@ -304,9 +304,9 @@ header > h1 {
   }
   .account_data {
       width: 97.5%;
-      height: 420px;
-      background-color: rgb(225, 215, 255);
+      /* background-color: rgb(225, 215, 255); */
       margin: 0 1.25%;
+      display: none;
   }
   #account_table th:first-of-type {
     background-color: rgb(225, 215, 255)

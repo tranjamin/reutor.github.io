@@ -193,7 +193,7 @@ updateTopicDiv = function(){
                         db.collection("users").doc(auth.currentUser.uid).get().then(doc => {
                             var new_bookmarks = doc.data().bookmarks.push ? doc.data().bookmarks : [];
                             console.log(new_bookmarks)
-                            new_bookmarks.push(question[1])
+                            new_bookmarks.push(snapshot.ref.path.toString() + "/" + question[1])
                             db.collection("users").doc(auth.currentUser.uid).update({
                                 bookmarks: new_bookmarks
                             })
@@ -204,7 +204,7 @@ updateTopicDiv = function(){
                             db.collection("users").doc(auth.currentUser.uid).get().then(doc => {
                                 var new_bookmarks = doc.data().bookmarks;
                                 console.log(new_bookmarks)
-                                new_bookmarks.splice(new_bookmarks.indexOf(question[1]), 1);
+                                new_bookmarks.splice(new_bookmarks.indexOf(snapshot.ref.path.toString() + "/" + question[1]), 1);
                                 db.collection("users").doc(auth.currentUser.uid).update({
                                     bookmarks: new_bookmarks
                                 })
