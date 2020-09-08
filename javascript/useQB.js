@@ -391,14 +391,15 @@ updateTopicDiv = function(){
                     // questionZone.appendChild(nQstnSaveDiv)
                     questionZone.appendChild(individual_question);
                     questionZone.appendChild(LINE)
+                
                 if (last_index_check == questionList.length - 1 && auth.currentUser) {
                     db.collection('users').doc(auth.currentUser.uid).get().then(doc => {
                         var removal_array = doc.data().removals;
-                        console.log(removal_array)
                         var bookmark_array = doc.data().bookmarks;
+                        console.log('AUTH', removal_array, bookmark_array);
                         ([]).forEach.call(document.getElementsByClassName('individual_question'), ele => {
                             var qstn_id = ele.getElementsByClassName('QstnInfo')[0].childNodes[3].childNodes[0].data.split(' ')[1]
-                            if (removal_array.includes(qstn_id)) {
+                            if (removal_array.includes(snapshot.ref.path + "/" + qstn_id)) {
                                 ele.style.overflow = "hidden";
                                 ele.getElementsByClassName('options')[0].getElementsByTagName('span')[0].style.display = "none";
                                 ele.getElementsByClassName('options')[0].getElementsByTagName('span')[1].style.display = "none";
@@ -409,7 +410,7 @@ updateTopicDiv = function(){
                                 ele.style.height = ele.getElementsByClassName('options2')[0].getElementsByTagName('span')[1].getBoundingClientRect().bottom - ele.getBoundingClientRect().top + "px";
 
                             }
-                            if (bookmark_array.includes(qstn_id)) {
+                            if (bookmark_array.includes(snapshot.ref.path + "/" + qstn_id)) {
                                 ele.getElementsByClassName('options')[0].childNodes[0].innerHTML = "★"
                             }
                         })
