@@ -53,7 +53,7 @@ $('signup_form').getElementsByTagName('form')[1].addEventListener('submit', e =>
             practice: [],
             completed: [],
         }).then(docRef => {
-            //window.location.reload()
+            window.location.reload()
         })
     }).catch(error => {e.target.nextElementSibling.innerHTML = error.message});
     }
