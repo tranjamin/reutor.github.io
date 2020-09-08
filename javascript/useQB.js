@@ -34,7 +34,15 @@ $('signup_form').getElementsByTagName('form')[1].addEventListener('submit', e =>
     e.preventDefault();
     ([]).forEach.call(document.getElementsByClassName('error'), ele => {ele.innerHTML = "";})
     if (e.target.passwordSU.value == e.target.confirmSU.value) {
-    auth.createUserWithEmailAndPassword(e.target.usernameSU.value + "@rutor.com", e.target.passwordSU.value).then(() => {window.location.reload()}).catch(error => {e.target.nextElementSibling.innerHTML = error.message});
+    auth.createUserWithEmailAndPassword(e.target.usernameSU.value + "@rutor.com", e.target.passwordSU.value).then(auth_id => {
+        console.log(auth_id.uid);
+        db.collection('users').doc(auth_id.user.uid).set({
+            bookmarks: [],
+            removals: [],
+            practice: [],
+            completed: [],
+        }).then(docRef => {window.location.reload()})
+    }).catch(error => {e.target.nextElementSibling.innerHTML = error.message});
     }
     else {
         e.target.nextElementSibling.innerHTML = "Passwords do not match";
@@ -180,12 +188,38 @@ updateTopicDiv = function(){
                     nQstnOptions2.setAttribute('class', 'options2')
             
                     nQstnOptions.getElementsByTagName('span')[0].addEventListener('click', e => {
-                        e.target.innerHTML = e.target.innerHTML == "☆" ? "★" : "☆"
-                        
+                        if (e.target.innerHTML == "☆") {
+                        e.target.innerHTML = "★";
+                        db.collection("users").doc(auth.currentUser.uid).get().then(doc => {
+                            var new_bookmarks = doc.data().bookmarks.push ? doc.data().bookmarks : [];
+                            console.log(new_bookmarks)
+                            new_bookmarks.push(question[1])
+                            db.collection("users").doc(auth.currentUser.uid).update({
+                                bookmarks: new_bookmarks
+                            })
+                        })
+                    }
+                        else {
+                            e.target.innerHTML = "☆";
+                            db.collection("users").doc(auth.currentUser.uid).get().then(doc => {
+                                var new_bookmarks = doc.data().bookmarks;
+                                console.log(new_bookmarks)
+                                new_bookmarks.splice(new_bookmarks.indexOf(question[1]), 1);
+                                db.collection("users").doc(auth.currentUser.uid).update({
+                                    bookmarks: new_bookmarks
+                                })
+                            })
+                        }
 // <-------------------------------------PUT-CODE-TO-TOGGLE-BOOKMARK-HERE---------------------------------------------> //
                     })
                     nQstnOptions2.getElementsByTagName('span')[0].addEventListener('click', e => {
-                        e.target.innerHTML = e.target.innerHTML == "⚐" ? "⚑" : "⚐"
+                        if (e.target.innerHTML == "⚐") {
+                            e.target.innerHTML = "⚑";
+                        }
+                        else {
+                            e.target.innerHTML = "⚐";
+                        }
+
 
 // <-------------------------------------PUT-CODE-TO-TOGGLE-FLAG-FOR-SPAM-(NOTIFIES-ADMIN)-HERE---------------------------------------------> //
                     })
@@ -203,7 +237,13 @@ updateTopicDiv = function(){
                                     e.target.parentElement.parentElement.parentElement.getElementsByClassName('question')[0].style.visibility = "hidden";
                                     clearInterval(interval)
 // <-----------------------------PUT-CODE-TO-REMOVE-QUESTION-FROM-FEED-HERE----------------------------------------> //
-
+                                    db.collection("users").doc(auth.currentUser.uid).get().then(doc => {
+                                        var removals = doc.data().removals.push ? doc.data().removals : [];
+                                        removals.push(question[1])
+                                        db.collection("users").doc(auth.currentUser.uid).update({
+                                            removals: doc.data().removals.push(question[1])
+                                        })
+                                    })
                                 
                                 }
                             }, 1)
@@ -225,7 +265,11 @@ updateTopicDiv = function(){
                                     parent.style.overflow = "visible"; parent.style.height = final_height; parent.style.height = "unset"; clearInterval(interval)}
                             
 // <-----------------------------PUT-CODE-TO-RE-ADD-QUESTION-FROM-FEED-HERE----------------------------------------> //
-                            
+                            db.collection("users").doc(auth.currentUser.uid).get().then(doc => {
+                                db.collection("users").doc(auth.currentUser.uid).update({
+                                    removals: doc.data().bookmarks.splice(doc.data().removals.indexOf(push(question[1])) - 1) 
+                                })
+                            })
                                 }, 1)
 
                         }
