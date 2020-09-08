@@ -98,6 +98,7 @@ li.about{
     margin-top: 0%;
     margin-left: 0%;
     background: rgb(225, 215, 255);
+    z-index: 69420;
 }
 
 .nav p{
@@ -207,6 +208,7 @@ header > h1 {
     text-align: center;
     font-size: 80%;
     justify-self: space-around;
+    visibility: hidden;
 }
 
 .autocomplete-items {

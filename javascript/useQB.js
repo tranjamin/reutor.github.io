@@ -64,7 +64,7 @@ questionList = []
 //console.log(firebase.database.ref('users/test/email').val())
 
 
-
+var x;
 
 
 updateTopicDiv = function(){
@@ -144,7 +144,7 @@ updateTopicDiv = function(){
                 })
 
                 shuffle(questionList);
-                questionList.forEach(function(question){
+                questionList.forEach((question, last_index_check) => {
                     console.log(question[1])
                     var LINE = document.createElement("hr")
             
@@ -164,7 +164,7 @@ updateTopicDiv = function(){
                     nQstnInfo.appendChild(nQstnCont)
             
                     var nQstnId = document.createElement("span")
-                    nQstnId.innerHTML = "ID: "+question[1]
+                    nQstnId.innerHTML = "ID: "+ question[1]
                     nQstnInfo.appendChild(nQstnId)
             
                     var nQstnEl = document.createElement("li")
@@ -239,9 +239,9 @@ updateTopicDiv = function(){
 // <-----------------------------PUT-CODE-TO-REMOVE-QUESTION-FROM-FEED-HERE----------------------------------------> //
                                     db.collection("users").doc(auth.currentUser.uid).get().then(doc => {
                                         var removals = doc.data().removals.push ? doc.data().removals : [];
-                                        removals.push(question[1])
+                                        removals.push(snapshot.ref.path.toString() + "/" + question[1])
                                         db.collection("users").doc(auth.currentUser.uid).update({
-                                            removals: doc.data().removals.push(question[1])
+                                            removals: removals
                                         })
                                     })
                                 
@@ -264,13 +264,20 @@ updateTopicDiv = function(){
                                 if (parseFloat(getComputedStyle(parent).height) > parseFloat(final_height)) {
                                     parent.style.overflow = "visible"; parent.style.height = final_height; parent.style.height = "unset"; clearInterval(interval)}
                             
-// <-----------------------------PUT-CODE-TO-RE-ADD-QUESTION-FROM-FEED-HERE----------------------------------------> //
-                            db.collection("users").doc(auth.currentUser.uid).get().then(doc => {
-                                db.collection("users").doc(auth.currentUser.uid).update({
-                                    removals: doc.data().bookmarks.splice(doc.data().removals.indexOf(push(question[1])) - 1) 
-                                })
-                            })
+
                                 }, 1)
+
+                            // <-----------------------------PUT-CODE-TO-RE-ADD-QUESTION-FROM-FEED-HERE----------------------------------------> //
+                            db.collection("users").doc(auth.currentUser.uid).get().then(doc => {
+                                var removals = doc.data().removals;
+                                removals.splice(removals.indexOf(snapshot.ref.path.toString() + "/" + question[1]), 1);
+                                console.log(removals);
+                                if (removals.indexOf(snapshot.ref.path.toString() + "/" + question[1]) != -1) {
+                                    db.collection("users").doc(auth.currentUser.uid).update({
+                                        removals: removals
+                                    })
+                                }
+                            })
 
                         }
                     })
@@ -370,7 +377,30 @@ updateTopicDiv = function(){
                     // questionZone.appendChild(nQstnSaveDiv)
                     questionZone.appendChild(individual_question);
                     questionZone.appendChild(LINE)
-                })
+                if (last_index_check == questionList.length - 1) {
+                    db.collection('users').doc(auth.currentUser.uid).get().then(doc => {
+                        var removal_array = doc.data().removals;
+                        console.log(removal_array)
+                        var bookmark_array = doc.data().bookmarks;
+                        ([]).forEach.call(document.getElementsByClassName('individual_question'), ele => {
+                            var qstn_id = ele.getElementsByClassName('QstnInfo')[0].childNodes[3].childNodes[0].data.split(' ')[1]
+                            if (removal_array.includes(qstn_id)) {
+                                ele.style.overflow = "hidden";
+                                ele.getElementsByClassName('options')[0].getElementsByTagName('span')[0].style.display = "none";
+                                ele.getElementsByClassName('options')[0].getElementsByTagName('span')[1].style.display = "none";
+                                ele.getElementsByClassName('options2')[0].getElementsByTagName('span')[0].style.display = "none";
+                                ele.getElementsByClassName('question')[0].style.visibility = "hidden";
+                                
+                                ele.getElementsByClassName('options2')[0].childNodes[1].style['font-weight'] = '900';
+                                ele.style.height = ele.getElementsByClassName('options2')[0].getElementsByTagName('span')[1].getBoundingClientRect().bottom - ele.getBoundingClientRect().top + "px";
+
+                            }
+                            if (bookmark_array.includes(qstn_id)) {
+                                ele.getElementsByClassName('options')[0].childNodes[0].innerHTML = "★"
+                            }
+                        })
+                         })
+                } })
 
                 if(questionList.length==0){
                     message = document.createElement("p")
