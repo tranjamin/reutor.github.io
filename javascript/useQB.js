@@ -240,6 +240,7 @@ updateTopicDiv = function(){
                                     db.collection("users").doc(auth.currentUser.uid).get().then(doc => {
                                         var removals = doc.data().removals.push ? doc.data().removals : [];
                                         removals.push(snapshot.ref.path.toString() + "/" + question[1])
+                                        console.log(removals);
                                         db.collection("users").doc(auth.currentUser.uid).update({
                                             removals: removals
                                         })

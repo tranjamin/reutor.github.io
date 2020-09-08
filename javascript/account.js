@@ -1,3 +1,5 @@
+//NOTE: if using snapshot.ref.path, this will be different. It will include the path id, but useQB won't
+
 $ = ele => {return document.getElementById(ele)}
 
 document.getElementsByClassName('account_data')[0].style.display = "unset";
@@ -15,7 +17,14 @@ auth.onAuthStateChanged(user => {
 
     db.collection('users').doc(auth.currentUser.uid).get().then(doc => {
         doc.data().bookmarks.forEach(ref => {
+            console.log(ref);
             display_question(ref, $('saved_questions'), 'SAVED');
+        })
+    })
+    db.collection('users').doc(auth.currentUser.uid).get().then(doc => {
+        doc.data().removals.forEach(ref => {
+            console.log(ref);
+            display_question(ref, $('removed_questions'), 'REMOVED');
         })
     })
 })
@@ -27,9 +36,9 @@ $('account_table').addEventListener('click', e => {
         ([]).forEach.call(document.getElementsByClassName('account_data'), ele => {ele.style['display'] = 'none'})
         var browse_id;
         switch (e.target.innerHTML) {
-            case 'My Questions': browse_id = 'my_questions'; break;
             case 'Saved Questions': browse_id = 'saved_questions'; break;
-            default: browse_id = 'my questions'; break;
+            case 'Removed Questions': browse_id = 'removed_questions'; break;
+            default: browse_id = 'Saved Questions'; break;
         }
         document.getElementById(browse_id).style.display = "block";
     }
@@ -90,7 +99,7 @@ function display_question(path, questionZone, sector) {
             db.collection("users").doc(auth.currentUser.uid).get().then(doc => {
                 var new_bookmarks = doc.data().bookmarks.push ? doc.data().bookmarks : [];
                 console.log(new_bookmarks)
-                new_bookmarks.push(snapshot.ref.path.toString() + "/" + question[1])
+                new_bookmarks.push(snapshot.ref.path.toString())
                 db.collection("users").doc(auth.currentUser.uid).update({
                     bookmarks: new_bookmarks
                 })
@@ -101,7 +110,7 @@ function display_question(path, questionZone, sector) {
                 db.collection("users").doc(auth.currentUser.uid).get().then(doc => {
                     var new_bookmarks = doc.data().bookmarks;
                     console.log(new_bookmarks)
-                    new_bookmarks.splice(new_bookmarks.indexOf(snapshot.ref.path.toString() + "/" + question[1]), 1);
+                    new_bookmarks.splice(new_bookmarks.indexOf(snapshot.ref.path.toString()), 1);
                     db.collection("users").doc(auth.currentUser.uid).update({
                         bookmarks: new_bookmarks
                     })
@@ -136,7 +145,7 @@ function display_question(path, questionZone, sector) {
 // <-----------------------------PUT-CODE-TO-REMOVE-QUESTION-FROM-FEED-HERE----------------------------------------> //
                         db.collection("users").doc(auth.currentUser.uid).get().then(doc => {
                             var removals = doc.data().removals.push ? doc.data().removals : [];
-                            removals.push(snapshot.ref.path.toString() + "/" + question[1])
+                            removals.push(snapshot.ref.path.toString())
                             db.collection("users").doc(auth.currentUser.uid).update({
                                 removals: removals
                             })
@@ -167,9 +176,9 @@ function display_question(path, questionZone, sector) {
                 // <-----------------------------PUT-CODE-TO-RE-ADD-QUESTION-FROM-FEED-HERE----------------------------------------> //
                 db.collection("users").doc(auth.currentUser.uid).get().then(doc => {
                     var removals = doc.data().removals;
-                    removals.splice(removals.indexOf(snapshot.ref.path.toString() + "/" + question[1]), 1);
+                    removals.splice(removals.indexOf(snapshot.ref.path.toString()), 1);
                     console.log(removals);
-                    if (removals.indexOf(snapshot.ref.path.toString() + "/" + question[1]) != -1) {
+                    if (removals.indexOf(snapshot.ref.path.toString()) != -1) {
                         db.collection("users").doc(auth.currentUser.uid).update({
                             removals: removals
                         })
@@ -268,15 +277,14 @@ function display_question(path, questionZone, sector) {
 
         if (sector == "SAVED") {nQstnOptions.getElementsByTagName('span')[0].innerHTML = "★"}
         else if (sector == "REMOVED") {
+            individual_question.style.height = "40px";
             individual_question.style.overflow = "hidden";
-            individual_question.getElementsByClassName('options')[0].getElementsByTagName('span')[0].style.display = "none";
-            individual_question.getElementsByClassName('options')[0].getElementsByTagName('span')[1].style.display = "none";
-            individual_question.getElementsByClassName('options2')[0].getElementsByTagName('span')[0].style.display = "none";
-            individual_question.getElementsByClassName('question')[0].style.visibility = "hidden";
-            
-            individual_question.getElementsByClassName('options2')[0].childNodes[1].style['font-weight'] = '900';
-            individual_question.style.height = individual_question.getElementsByClassName('options2')[0].getElementsByTagName('span')[1].getBoundingClientRect().bottom - individual_question.getBoundingClientRect().top + "px";
-
+            nQstnOptions.getElementsByTagName('span')[0].style.display = "none";
+            nQstnOptions.getElementsByTagName('span')[1].style.display = "none";
+            nQstnOptions2.getElementsByTagName('span')[0].style.display = "none";
+            nQstnEl.style.visibility = "hidden";
+            nQstnOptions2.childNodes[1].style['font-weight'] = '900';
+           
         }
 
     })
