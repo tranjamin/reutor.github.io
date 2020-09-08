@@ -34,7 +34,15 @@ $('signup_form').getElementsByTagName('form')[1].addEventListener('submit', e =>
     e.preventDefault();
     ([]).forEach.call(document.getElementsByClassName('error'), ele => {ele.innerHTML = "";})
     if (e.target.passwordSU.value == e.target.confirmSU.value) {
-    auth.createUserWithEmailAndPassword(e.target.usernameSU.value + "@rutor.com", e.target.passwordSU.value).then(() => {window.location.reload()}).catch(error => {e.target.nextElementSibling.innerHTML = error.message});
+    auth.createUserWithEmailAndPassword(e.target.usernameSU.value + "@rutor.com", e.target.passwordSU.value).then(auth_id => {
+        console.log(auth_id.uid);
+        db.collection('users').doc(auth_id.user.uid).set({
+            bookmarks: [],
+            removals: [],
+            practice: [],
+            completed: [],
+        }).then(docRef => {window.location.reload()})
+    }).catch(error => {e.target.nextElementSibling.innerHTML = error.message});
     }
     else {
         e.target.nextElementSibling.innerHTML = "Passwords do not match";
@@ -56,7 +64,7 @@ questionList = []
 //console.log(firebase.database.ref('users/test/email').val())
 
 
-
+var x;
 
 
 updateTopicDiv = function(){
@@ -136,7 +144,7 @@ updateTopicDiv = function(){
                 })
 
                 shuffle(questionList);
-                questionList.forEach(function(question){
+                questionList.forEach((question, last_index_check) => {
                     console.log(question[1])
                     var LINE = document.createElement("hr")
             
@@ -156,7 +164,7 @@ updateTopicDiv = function(){
                     nQstnInfo.appendChild(nQstnCont)
             
                     var nQstnId = document.createElement("span")
-                    nQstnId.innerHTML = "ID: "+question[1]
+                    nQstnId.innerHTML = "ID: "+ question[1]
                     nQstnInfo.appendChild(nQstnId)
             
                     var nQstnEl = document.createElement("li")
@@ -180,12 +188,49 @@ updateTopicDiv = function(){
                     nQstnOptions2.setAttribute('class', 'options2')
             
                     nQstnOptions.getElementsByTagName('span')[0].addEventListener('click', e => {
-                        e.target.innerHTML = e.target.innerHTML == "☆" ? "★" : "☆"
-                        
+                        if (auth.currentUser) {
+                        if (e.target.innerHTML == "☆") {
+                        e.target.innerHTML = "★";
+                        db.collection("users").doc(auth.currentUser.uid).get().then(doc => {
+                            var new_bookmarks = doc.data().bookmarks.push ? doc.data().bookmarks : [];
+                            console.log(new_bookmarks)
+                            new_bookmarks.push(snapshot.ref.path.toString() + "/" + question[1])
+                            db.collection("users").doc(auth.currentUser.uid).update({
+                                bookmarks: new_bookmarks
+                            })
+                        })
+                    }
+                        else {
+                            e.target.innerHTML = "☆";
+                            db.collection("users").doc(auth.currentUser.uid).get().then(doc => {
+                                var new_bookmarks = doc.data().bookmarks;
+                                console.log(new_bookmarks)
+                                new_bookmarks.splice(new_bookmarks.indexOf(snapshot.ref.path.toString() + "/" + question[1]), 1);
+                                db.collection("users").doc(auth.currentUser.uid).update({
+                                    bookmarks: new_bookmarks
+                                })
+                            })
+                        }
+                    }
+                    else {
+                        window.alert('You must be signed in to use this feature')
+                    }
 // <-------------------------------------PUT-CODE-TO-TOGGLE-BOOKMARK-HERE---------------------------------------------> //
                     })
                     nQstnOptions2.getElementsByTagName('span')[0].addEventListener('click', e => {
-                        e.target.innerHTML = e.target.innerHTML == "⚐" ? "⚑" : "⚐"
+                        if (e.target.innerHTML == "⚐") {
+                            e.target.innerHTML = "⚑";
+                            db.collection('flag').add({
+                                submitted_by: auth.currentUser ? auth.currentUser.uid : "anon",
+                                submitted_at: new Date(),
+                                complaint_path: snapshot.ref.path.toString() + "/" + question[1],
+                                complaint_author: question[0]["contributer"]
+                            })
+                        }
+                        else {
+                            e.target.innerHTML = "⚐";
+                        }
+
 
 // <-------------------------------------PUT-CODE-TO-TOGGLE-FLAG-FOR-SPAM-(NOTIFIES-ADMIN)-HERE---------------------------------------------> //
                     })
@@ -203,8 +248,16 @@ updateTopicDiv = function(){
                                     e.target.parentElement.parentElement.parentElement.getElementsByClassName('question')[0].style.visibility = "hidden";
                                     clearInterval(interval)
 // <-----------------------------PUT-CODE-TO-REMOVE-QUESTION-FROM-FEED-HERE----------------------------------------> //
-
-                                
+                                    if (auth.currentUser) {
+                                        db.collection("users").doc(auth.currentUser.uid).get().then(doc => {
+                                        var removals = doc.data().removals.push ? doc.data().removals : [];
+                                        removals.push(snapshot.ref.path.toString() + "/" + question[1])
+                                        console.log(removals);
+                                        db.collection("users").doc(auth.currentUser.uid).update({
+                                            removals: removals
+                                        })
+                                    })
+                                    }
                                 }
                             }, 1)
                         }
@@ -224,10 +277,22 @@ updateTopicDiv = function(){
                                 if (parseFloat(getComputedStyle(parent).height) > parseFloat(final_height)) {
                                     parent.style.overflow = "visible"; parent.style.height = final_height; parent.style.height = "unset"; clearInterval(interval)}
                             
-// <-----------------------------PUT-CODE-TO-RE-ADD-QUESTION-FROM-FEED-HERE----------------------------------------> //
-                            
+
                                 }, 1)
 
+                            // <-----------------------------PUT-CODE-TO-RE-ADD-QUESTION-FROM-FEED-HERE----------------------------------------> //
+                            if (auth.currentUser) {
+                            db.collection("users").doc(auth.currentUser.uid).get().then(doc => {
+                                var removals = doc.data().removals;
+                                removals.splice(removals.indexOf(snapshot.ref.path.toString() + "/" + question[1]), 1);
+                                console.log(removals);
+                                if (removals.indexOf(snapshot.ref.path.toString() + "/" + question[1]) != -1) {
+                                    db.collection("users").doc(auth.currentUser.uid).update({
+                                        removals: removals
+                                    })
+                                }
+                            })
+                        }
                         }
                     })
 
@@ -326,7 +391,30 @@ updateTopicDiv = function(){
                     // questionZone.appendChild(nQstnSaveDiv)
                     questionZone.appendChild(individual_question);
                     questionZone.appendChild(LINE)
-                })
+                if (last_index_check == questionList.length - 1 && auth.currentUser) {
+                    db.collection('users').doc(auth.currentUser.uid).get().then(doc => {
+                        var removal_array = doc.data().removals;
+                        console.log(removal_array)
+                        var bookmark_array = doc.data().bookmarks;
+                        ([]).forEach.call(document.getElementsByClassName('individual_question'), ele => {
+                            var qstn_id = ele.getElementsByClassName('QstnInfo')[0].childNodes[3].childNodes[0].data.split(' ')[1]
+                            if (removal_array.includes(qstn_id)) {
+                                ele.style.overflow = "hidden";
+                                ele.getElementsByClassName('options')[0].getElementsByTagName('span')[0].style.display = "none";
+                                ele.getElementsByClassName('options')[0].getElementsByTagName('span')[1].style.display = "none";
+                                ele.getElementsByClassName('options2')[0].getElementsByTagName('span')[0].style.display = "none";
+                                ele.getElementsByClassName('question')[0].style.visibility = "hidden";
+                                
+                                ele.getElementsByClassName('options2')[0].childNodes[1].style['font-weight'] = '900';
+                                ele.style.height = ele.getElementsByClassName('options2')[0].getElementsByTagName('span')[1].getBoundingClientRect().bottom - ele.getBoundingClientRect().top + "px";
+
+                            }
+                            if (bookmark_array.includes(qstn_id)) {
+                                ele.getElementsByClassName('options')[0].childNodes[0].innerHTML = "★"
+                            }
+                        })
+                         })
+                } })
 
                 if(questionList.length==0){
                     message = document.createElement("p")

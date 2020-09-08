@@ -62,7 +62,7 @@
             </form>
             
             <br><br>
-            <p><span>&#9734</span>: Bookmark Question   |&nbsp<span>&#9998</span>: Send Feedback   |&nbsp<span>&#9872</span>: Flag for Spam or Inappropriate Content  |&nbsp<span>&#128465</span>: Do not suggest again</p>
+            <p><span>&#9734</span>: Bookmark Question   |&nbsp<!--<span>&#9998</span>: Send Feedback   |&nbsp--><span>&#9872</span>: Flag for Spam or Inappropriate Content  |&nbsp<span>&#128465</span>: Do not suggest again</p>
             <hr>
             <div id='questionZone'></div>
 
@@ -102,6 +102,7 @@
         <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-analytics.js"></script>
         <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-database.js"></script>
         <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-firestore.js"></script>
 
         <script>
         // Your web app's Firebase configuration
@@ -120,6 +121,7 @@
         firebase.analytics();
         var database = firebase.database();
         const auth = firebase.auth();
+        const db = firebase.firestore();
         console.log('geohgoe')
         </script>
         <script src='./javascript/useQB.js'></script>
