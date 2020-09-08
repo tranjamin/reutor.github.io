@@ -188,6 +188,7 @@ updateTopicDiv = function(){
                     nQstnOptions2.setAttribute('class', 'options2')
             
                     nQstnOptions.getElementsByTagName('span')[0].addEventListener('click', e => {
+                        if (auth.currentUser) {
                         if (e.target.innerHTML == "☆") {
                         e.target.innerHTML = "★";
                         db.collection("users").doc(auth.currentUser.uid).get().then(doc => {
@@ -210,11 +211,21 @@ updateTopicDiv = function(){
                                 })
                             })
                         }
+                    }
+                    else {
+                        window.alert('You must be signed in to use this feature')
+                    }
 // <-------------------------------------PUT-CODE-TO-TOGGLE-BOOKMARK-HERE---------------------------------------------> //
                     })
                     nQstnOptions2.getElementsByTagName('span')[0].addEventListener('click', e => {
                         if (e.target.innerHTML == "⚐") {
                             e.target.innerHTML = "⚑";
+                            db.collection('flag').add({
+                                submitted_by: auth.currentUser ? auth.currentUser.uid : "anon",
+                                submitted_at: new Date(),
+                                complaint_path: snapshot.ref.path.toString() + "/" + question[1],
+                                complaint_author: question[0]["contributer"]
+                            })
                         }
                         else {
                             e.target.innerHTML = "⚐";
@@ -237,7 +248,8 @@ updateTopicDiv = function(){
                                     e.target.parentElement.parentElement.parentElement.getElementsByClassName('question')[0].style.visibility = "hidden";
                                     clearInterval(interval)
 // <-----------------------------PUT-CODE-TO-REMOVE-QUESTION-FROM-FEED-HERE----------------------------------------> //
-                                    db.collection("users").doc(auth.currentUser.uid).get().then(doc => {
+                                    if (auth.currentUser) {
+                                        db.collection("users").doc(auth.currentUser.uid).get().then(doc => {
                                         var removals = doc.data().removals.push ? doc.data().removals : [];
                                         removals.push(snapshot.ref.path.toString() + "/" + question[1])
                                         console.log(removals);
@@ -245,7 +257,7 @@ updateTopicDiv = function(){
                                             removals: removals
                                         })
                                     })
-                                
+                                    }
                                 }
                             }, 1)
                         }
@@ -269,6 +281,7 @@ updateTopicDiv = function(){
                                 }, 1)
 
                             // <-----------------------------PUT-CODE-TO-RE-ADD-QUESTION-FROM-FEED-HERE----------------------------------------> //
+                            if (auth.currentUser) {
                             db.collection("users").doc(auth.currentUser.uid).get().then(doc => {
                                 var removals = doc.data().removals;
                                 removals.splice(removals.indexOf(snapshot.ref.path.toString() + "/" + question[1]), 1);
@@ -279,7 +292,7 @@ updateTopicDiv = function(){
                                     })
                                 }
                             })
-
+                        }
                         }
                     })
 
@@ -378,7 +391,7 @@ updateTopicDiv = function(){
                     // questionZone.appendChild(nQstnSaveDiv)
                     questionZone.appendChild(individual_question);
                     questionZone.appendChild(LINE)
-                if (last_index_check == questionList.length - 1) {
+                if (last_index_check == questionList.length - 1 && auth.currentUser) {
                     db.collection('users').doc(auth.currentUser.uid).get().then(doc => {
                         var removal_array = doc.data().removals;
                         console.log(removal_array)

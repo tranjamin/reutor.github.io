@@ -338,3 +338,7 @@ header > h1 {
 #signup_form input {
     filter: none;
 }
+
+.options span:last-of-type {
+    visibility: hidden;
+}
