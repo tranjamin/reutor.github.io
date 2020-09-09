@@ -205,10 +205,12 @@ updateTopicDiv = function(){
                             db.collection("users").doc(auth.currentUser.uid).get().then(doc => {
                                 var new_bookmarks = doc.data().bookmarks;
                                 console.log(new_bookmarks)
+                                if (new_bookmarks.indexOf(snapshot.ref.path.toString() + "/" + question[1]) != -1) {
                                 new_bookmarks.splice(new_bookmarks.indexOf(snapshot.ref.path.toString() + "/" + question[1]), 1);
                                 db.collection("users").doc(auth.currentUser.uid).update({
                                     bookmarks: new_bookmarks
                                 })
+                            }
                             })
                         }
                     }
@@ -284,9 +286,9 @@ updateTopicDiv = function(){
                             if (auth.currentUser) {
                             db.collection("users").doc(auth.currentUser.uid).get().then(doc => {
                                 var removals = doc.data().removals;
+                                if (removals.indexOf(snapshot.ref.path.toString() + "/" + question[1]) != -1) {
                                 removals.splice(removals.indexOf(snapshot.ref.path.toString() + "/" + question[1]), 1);
                                 console.log(removals);
-                                if (removals.indexOf(snapshot.ref.path.toString() + "/" + question[1]) != -1) {
                                     db.collection("users").doc(auth.currentUser.uid).update({
                                         removals: removals
                                     })
