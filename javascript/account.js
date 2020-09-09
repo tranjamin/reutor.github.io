@@ -110,10 +110,12 @@ function display_question(path, questionZone, sector) {
                 db.collection("users").doc(auth.currentUser.uid).get().then(doc => {
                     var new_bookmarks = doc.data().bookmarks;
                     console.log(new_bookmarks)
+                    if (new_bookmarks.indexOf(snapshot.ref.path.toString()) != -1) {
                     new_bookmarks.splice(new_bookmarks.indexOf(snapshot.ref.path.toString()), 1);
                     db.collection("users").doc(auth.currentUser.uid).update({
                         bookmarks: new_bookmarks
                     })
+                }
                 })
             }
 // <-------------------------------------PUT-CODE-TO-TOGGLE-BOOKMARK-HERE---------------------------------------------> //
@@ -176,9 +178,9 @@ function display_question(path, questionZone, sector) {
                 // <-----------------------------PUT-CODE-TO-RE-ADD-QUESTION-FROM-FEED-HERE----------------------------------------> //
                 db.collection("users").doc(auth.currentUser.uid).get().then(doc => {
                     var removals = doc.data().removals;
-                    removals.splice(removals.indexOf(snapshot.ref.path.toString()), 1);
-                    console.log(removals);
+                    console.log(removals, snapshot.ref.path.toString());
                     if (removals.indexOf(snapshot.ref.path.toString()) != -1) {
+                        removals.splice(removals.indexOf(snapshot.ref.path.toString()), 1);
                         db.collection("users").doc(auth.currentUser.uid).update({
                             removals: removals
                         })
