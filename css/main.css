@@ -14,7 +14,7 @@ body {
 }
 
 .darkMode {
-    background: black;
+    background: rgb(0, 17, 28);
     filter: invert(1) hue-rotate(180deg);
 }
 
