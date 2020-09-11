@@ -8,10 +8,8 @@
 //<------IF YOU WANT TO UPDATE INFO, YOU MUST RENEW YOUR AUTH TOKEN FIRST------->
 
 
-const $ = ele => {return document.getElementById(ele)}
-
 auth.onAuthStateChanged(user => {
-    console.log(user)
+    //console.log(user)
     
     if (user) {
         $('welcomeMessage').innerHTML = `Welcome, ${user.email.slice(0, user.email.lastIndexOf('@'))}`  

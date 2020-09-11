@@ -22,7 +22,9 @@
             <h2 style="text-align: center;" id="userTittle">Account</h2>
             <br>
 
-            <p>This account functionality is still in development, please stand by.</p>
+            <label for="darkmodeButt">Darkmode(beta): </label><input id="darkmodeButt" type="checkbox" name="darkmodeButt"></input><br><br>
+
+
 
             <table id="account_table">
                 <tr><th>Saved Questions</th><th>Removed Questions</th></tr>
@@ -47,25 +49,26 @@
         <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-firestore.js"></script>
 
         <script>
-        // Your web app's Firebase configuration
-        var firebaseConfig = {
-            apiKey: "AIzaSyDDA6cL7gj05Qf82o5SvoOOP1mZck3UKp8",
-            authDomain: "rutor-1962a.firebaseapp.com",
-            databaseURL: "https://rutor-1962a.firebaseio.com",
-            projectId: "rutor-1962a",
-            storageBucket: "rutor-1962a.appspot.com",
-            messagingSenderId: "1097644424015",
-            appId: "1:1097644424015:web:295af3229b7d7801c7a33a",
-            measurementId: "G-H4T4CK6YN7"
-        };
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        firebase.analytics();
-        var database = firebase.database();
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-    </script>
-            <script src="./javascript/account.js"></script>
+            // Your web app's Firebase configuration
+            var firebaseConfig = {
+                apiKey: "AIzaSyDDA6cL7gj05Qf82o5SvoOOP1mZck3UKp8",
+                authDomain: "rutor-1962a.firebaseapp.com",
+                databaseURL: "https://rutor-1962a.firebaseio.com",
+                projectId: "rutor-1962a",
+                storageBucket: "rutor-1962a.appspot.com",
+                messagingSenderId: "1097644424015",
+                appId: "1:1097644424015:web:295af3229b7d7801c7a33a",
+                measurementId: "G-H4T4CK6YN7"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            firebase.analytics();
+            var database = firebase.database();
+            const auth = firebase.auth();
+            const db = firebase.firestore();
+        </script>
+        <script src="./javascript/universal.js"></script>
+        <script src="./javascript/account.js"></script>
     </body>
 
 

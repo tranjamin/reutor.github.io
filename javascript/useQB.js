@@ -1,5 +1,3 @@
-$ = ele => {return document.getElementById(ele)}
-
 auth.onAuthStateChanged(user => {
     console.log("auth state change triggered")
     if (user) {

@@ -1,7 +1,5 @@
 //NOTE: if using snapshot.ref.path, this will be different. It will include the path id, but useQB won't
 
-$ = ele => {return document.getElementById(ele)}
-
 document.getElementsByClassName('account_data')[0].style.display = "unset";
 
 $('signup_button').addEventListener('click', e => {
@@ -13,21 +11,35 @@ auth.onAuthStateChanged(user => {
     console.log("Auth state change")
     if(user){
         $("userTittle").innerHTML = 'Account: '+user.email.slice(0, user.email.lastIndexOf('@'))
-    }
 
-    db.collection('users').doc(auth.currentUser.uid).get().then(doc => {
-        doc.data().bookmarks.forEach(ref => {
-            console.log(ref);
-            display_question(ref, $('saved_questions'), 'SAVED');
+        db.collection('users').doc(auth.currentUser.uid).get().then(doc => {
+            userData = doc.data()
+            
+            userData.bookmarks.forEach(ref => {
+                console.log(ref);
+                display_question(ref, $('saved_questions'), 'SAVED');
+            })
+            userData.removals.forEach(ref => {
+                console.log(ref);
+                display_question(ref, $('removed_questions'), 'REMOVED');
+            })
+            if(userData.isDarkMode == true){
+                $('darkmodeButt').checked = true;
+            }
         })
-    })
-    db.collection('users').doc(auth.currentUser.uid).get().then(doc => {
-        doc.data().removals.forEach(ref => {
-            console.log(ref);
-            display_question(ref, $('removed_questions'), 'REMOVED');
+        
+        $("darkmodeButt").addEventListener("click", function(event){
+            if(this.checked){
+                db.collection('users').doc(auth.currentUser.uid).update({isDarkMode: true}).then(function(whatever){window.location.reload()})
+            }else{
+                db.collection('users').doc(auth.currentUser.uid).update({isDarkMode: false}).then(function(whatever){window.location.reload()})
+            }
         })
-    })
+
+    }
 })
+
+
 
 $('account_table').addEventListener('click', e => {
     if (e.target.tagName == "TH") {
