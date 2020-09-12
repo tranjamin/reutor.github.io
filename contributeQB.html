@@ -64,10 +64,12 @@
                 <label for="contributer">Contributer: </label>
                 <input name="contributer"placeholder="YOUR NAME" required><br>
 
-                <label for="questionInput">Write your question here:</label><br>
-                <textarea required id="questionInput"placeholder="QUESTION"></textarea><br>
+                <label for="questionInput">Write your question here (or <input id="createSvgButt" type="button" value="Draw Question (SVG)"></input>)</label>
+                <span id="svgMenuQ">| <a href="https://sketch.io/sketchpad/" target="_black">Create</a> | Open: <input id="svgFileInput" type="file"></span>
+                <textarea required name="questionInput" placeholder="QUESTION"></textarea><br>
 
-                <label for="answerInput">Write your answer here, incuding working out if possible (if answer not known, leave blank):</label><br>
+                <label for="answerInput">Write your answer here, incuding working out if possible (if answer not known, leave blank) <input id="createSvgButtA" type="button" value="Draw Question (SVG)"></input>:</label><br>
+                <span id="svgMenuA">| <a href="https://sketch.io/sketchpad/" target="_black">Create</a> | Open: <input id="svgFileInputA" type="file"></span>
                 <textarea id="answerInput"placeholder="ANSWER"></textarea><br>
                 
                 <!-- <label for="workingOutInput">Write your working out here (or leave blank):</label><br>

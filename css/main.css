@@ -18,6 +18,8 @@ body {
     filter: invert(1) hue-rotate(180deg);
 }
 
+
+
 .autocomplete {
     /*the container must be positioned relative:*/
     position: relative;
@@ -34,7 +36,7 @@ p {
 
 
 textarea{
-    width: 50%;
+    width: 100%;
 }
 
 hr {
@@ -163,6 +165,10 @@ li.about{
     padding-bottom: 0%;
     margin-bottom:0%;
     height: 85px;
+}
+
+#svgMenuQ, #svgMenuA{
+    display: none;
 }
 
 header > h1 {

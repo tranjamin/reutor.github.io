@@ -1,5 +1,49 @@
+contributeForm = document.querySelector("#newQstnForm")
+
+fileReader = new FileReader();
+
+
+$("createSvgButt").addEventListener("click", function(event){
+  if(event.target.value == "Draw Question (SVG)"){
+    event.target.value = "Type Question"
+    $("svgMenuQ").style.display = "inline"
+  }else{
+    event.target.value = "Draw Question (SVG)"
+    $("svgMenuQ").style.display = "none"
+  }
+  
+})
+
+$("createSvgButtA").addEventListener("click", function(event){
+  if(event.target.value == "Draw Question (SVG)"){
+    event.target.value = "Type Question"
+    $("svgMenuA").style.display = "inline"
+  }else{
+    event.target.value = "Draw Question (SVG)"
+    $("svgMenuA").style.display = "none"
+  }
+  
+})
+
+$("svgFileInput").addEventListener("change", function(event){
+  fileReader.readAsText(event.target.files[0])
+  fileReader.addEventListener("load", function(event){
+    contributeForm["questionInput"].innerHTML = event.target.result
+  })
+})
+
+
+$("svgFileInputA").addEventListener("change", function(event){
+  fileReader.readAsText(event.target.files[0])
+  fileReader.addEventListener("load", function(event){
+    contributeForm["answerInput"].innerHTML = event.target.result
+  })
+})
+
+
+
 auth.onAuthStateChanged(user => {
-  console.log(user)
+  //console.log(user)
   if (user) {
       $('welcomeMessage').innerHTML = `Welcome, ${user.email.slice(0, user.email.lastIndexOf('@'))}`  
       $('signup_button').innerHTML = `<br><p class="navButton">Logout</p><br><p class="navButton">Account</p>`
@@ -49,9 +93,6 @@ $('signup_form').getElementsByTagName('form')[1].addEventListener('submit', e =>
 
 console.log("contributeQB.js is running on current html document")
 
-contributeForm = document.querySelector("#newQstnForm")
-
-
 autoArr = []
 updateAutoArr = function(){
   arr = []
@@ -84,33 +125,42 @@ contributeForm.addEventListener('submit', (e)=>{
   //   e.target.nextElementSibling.innerHTML = "Your contributor name must be the same as your username";
   // }
   else {
-  $('contributeButton').style.display = "none";
-  console.log("Form_Submitted")
-  console.log("Form submitted by "+contributeForm['contributer'].value)
-  database.ref(`questions/${contributeForm['subject'].value}/${contributeForm['unit'].value}/${Math.round(Math.random()*100000000)}`).set({
-    difficulty: contributeForm['difficulty'].value,
-    contributer: contributeForm['contributer'].value,
-    question: contributeForm['questionInput'].value.replaceAll("\n", "</br>"),
-    answer: contributeForm['answerInput'].value.replaceAll("\n", "</br>"),
-    //workingOut: contributeForm['workingOutInput'].value.replaceAll().replaceAll("\n", "</br>"),
-    tech: contributeForm['tech'].value,
-    topic: contributeForm["topic"].value
-  }).catch(error => {e.target.nextElementSibling.innerHTML = error.message; 
-    $('contributeButton').style.display = "initial";});
-  database.ref("topics/"+contributeForm["subject"].value+"/"+contributeForm["unit"].value).once("value", function(snapshot){
-    pushTopic = true
-    snapshot.forEach(function(child){
-      if(child.val()["name"] == contributeForm["topic"].value){
-        pushTopic = false
-      }
-    })
-    if(pushTopic){
-      database.ref("topics/"+contributeForm["subject"].value+"/"+contributeForm["unit"].value).push().set({
-        name: contributeForm["topic"].value
-      })
+    $('contributeButton').style.display = "none";
+    console.log("Form_Submitted")
+    console.log("Form submitted by "+contributeForm['contributer'].value)
+
+    if(($("createSvgButt").value == "Type Question") || ($("createSvgButtA").value == "Type Question")){
+      nQuestionData = contributeForm['questionInput'].value
+      nAnswerData = contributeForm['answerInput'].value
+    } else {
+      nQuestionData = contributeForm['questionInput'].value.replaceAll("\n", "</br>")
+      nAnswerData = contributeForm['answerInput'].value.replaceAll("\n", "</br>")
     }
-  }).then(ref => window.location.href="./index.html").catch(error => {e.target.nextElementSibling.innerHTML = error.message; 
-    $('contributeButton').style.display = "initial";})
+
+    database.ref(`questions/${contributeForm['subject'].value}/${contributeForm['unit'].value}/${Math.round(Math.random()*100000000)}`).set({
+      difficulty: contributeForm['difficulty'].value,
+      contributer: contributeForm['contributer'].value,
+      question: nQuestionData,
+      answer: nAnswerData,
+      //workingOut: contributeForm['workingOutInput'].value.replaceAll().replaceAll("\n", "</br>"),
+      tech: contributeForm['tech'].value,
+      topic: contributeForm["topic"].value
+    }).catch(error => {e.target.nextElementSibling.innerHTML = error.message; 
+      $('contributeButton').style.display = "initial";});
+    database.ref("topics/"+contributeForm["subject"].value+"/"+contributeForm["unit"].value).once("value", function(snapshot){
+      pushTopic = true
+      snapshot.forEach(function(child){
+        if(child.val()["name"] == contributeForm["topic"].value){
+          pushTopic = false
+        }
+      })
+      if(pushTopic){
+        database.ref("topics/"+contributeForm["subject"].value+"/"+contributeForm["unit"].value).push().set({
+          name: contributeForm["topic"].value
+        })
+      }
+    }).then(ref => window.location.href="./index.html").catch(error => {e.target.nextElementSibling.innerHTML = error.message; 
+      $('contributeButton').style.display = "initial";})
 
 }
 })
