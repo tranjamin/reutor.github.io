@@ -7,8 +7,13 @@ auth.onAuthStateChanged(user => {
     if(user){
         db.collection('users').doc(auth.currentUser.uid).get().then(doc => {
             userData = doc.data()
-            if(userData && userData.isDarkMode == true || window.matchMedia('prefers-color-scheme: dark').matches){
+            if(userData && userData.isDarkMode == true || (window.matchMedia('prefers-color-scheme: dark').matches && userData.isDarkMode === undefined)){
                 document.querySelector("html").classList.add("darkMode");
+            }
+            else if (!userData) {
+                if(window.matchMedia('prefers-color-scheme: dark').matches){
+                    document.querySelector("html").classList.add("darkMode");
+                } 
             }
         })
 
